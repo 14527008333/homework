@@ -1,15 +1,33 @@
 package com.zhk.zhkopencart.po;
 
-import lombok.Data;
-import org.omg.CORBA.INTERNAL;
-
-import java.util.List;
-
-@Data
 public class ProductDetail {
     private Integer productId;
 
+    private String otherPicUrls;
+
     private String description;
 
-    private List<String> otherPicUrls;
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public String getOtherPicUrls() {
+        return otherPicUrls;
+    }
+
+    public void setOtherPicUrls(String otherPicUrls) {
+        this.otherPicUrls = otherPicUrls == null ? null : otherPicUrls.trim();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
+    }
 }

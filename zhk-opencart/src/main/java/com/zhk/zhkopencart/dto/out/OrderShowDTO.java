@@ -1,7 +1,5 @@
 package com.zhk.zhkopencart.dto.out;
 
-import com.zhk.zhkopencart.po.OrderHistory;
-
 import java.util.Date;
 import java.util.List;
 

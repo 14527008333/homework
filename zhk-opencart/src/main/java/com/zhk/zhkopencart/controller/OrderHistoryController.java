@@ -1,6 +1,5 @@
 package com.zhk.zhkopencart.controller;
 
-import com.zhk.zhkopencart.po.OrderHistory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

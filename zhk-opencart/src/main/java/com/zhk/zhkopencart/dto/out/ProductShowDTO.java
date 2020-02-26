@@ -1,6 +1,5 @@
 package com.zhk.zhkopencart.dto.out;
 
-import com.zhk.zhkopencart.po.ProductDetail;
 import lombok.Data;
 
 @Data
