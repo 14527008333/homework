@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
-        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
     <!--    &lt;!&ndash;导入外部属性文件 &ndash;&gt;
@@ -19,10 +19,14 @@
 
         <!--数据库链接信息-->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/opencart?serverTimezone=Asia/Shanghai" userId="root"
+                        connectionURL="jdbc:mysql://localhost:3306/opencart?serverTimezone=Asia/Shanghai&amp;nullCatalogMeansCurrent=true" userId="root"
                         password="200081">
         </jdbcConnection>
-
+      <!--  <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/opencart?characterEncoding=utf-8"
+                        userId="root" password="200081">
+        </jdbcConnection>
+-->
         <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制-->
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -56,16 +60,16 @@
         </javaClientGenerator>
 
 
-  <table tableName="jcart_administrator" domainObjectName="Administrator" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-     <table tableName="jcart_address" domainObjectName="Address" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-     <table tableName="jcart_customer" domainObjectName="Customer" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="jcart_product" domainObjectName="Product" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-      <table tableName="jcart_product_detail" domainObjectName="ProductDetail" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-    <table tableName="jcart_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-     <table tableName="jcart_order_detail" domainObjectName="OrderDetail" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-      <table tableName="jcart_order_history" domainObjectName="OrderHistory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-       <table tableName="jcart_return" domainObjectName="Return" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-     <table tableName="jcart_return_history" domainObjectName="ReturnHistory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+  <table tableName="jcart_administrator" domainObjectName="Administrator" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="administrator_id" sqlStatement="Mysql" identity="true" /></table>
+     <table tableName="jcart_address" domainObjectName="Address" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="address_id" sqlStatement="Mysql" identity="true" /></table>
+     <table tableName="jcart_customer" domainObjectName="Customer" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="customer_id" sqlStatement="Mysql" identity="true" /></table>
+        <table tableName="jcart_product" domainObjectName="Product" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="product_id" sqlStatement="Mysql" identity="true" /></table>
+      <table tableName="jcart_product_detail" domainObjectName="ProductDetail" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="product_id" sqlStatement="Mysql" identity="true" /></table>
+    <table tableName="jcart_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="order_id" sqlStatement="Mysql" identity="true" /></table>
+     <table tableName="jcart_order_detail" domainObjectName="OrderDetail" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="order_id" sqlStatement="Mysql" identity="true" /></table>
+      <table tableName="jcart_order_history" domainObjectName="OrderHistory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="order_history_id" sqlStatement="Mysql" identity="true" /></table>
+       <table tableName="jcart_return" domainObjectName="Return" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"><generatedKey column="return_id" sqlStatement="Mysql" identity="true" /></table>
+     <table tableName="jcart_return_history" domainObjectName="ReturnHistory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" ><generatedKey column="return_history_id" sqlStatement="Mysql" identity="true" /></table>
 
     </context>
 </generatorConfiguration>
