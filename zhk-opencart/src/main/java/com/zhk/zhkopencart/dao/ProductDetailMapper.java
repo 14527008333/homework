@@ -1,7 +1,9 @@
 package com.zhk.zhkopencart.dao;
 
 import com.zhk.zhkopencart.po.ProductDetail;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProductDetailMapper {
     int deleteByPrimaryKey(Integer productId);
 

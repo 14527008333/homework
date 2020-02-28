@@ -1,17 +1,21 @@
 package com.zhk.zhkopencart.controller;
 
+import com.github.pagehelper.Page;
 import com.zhk.zhkopencart.dto.in.ProductCreateDTO;
 import com.zhk.zhkopencart.dto.in.ProductUpdateDTO;
+import com.zhk.zhkopencart.dto.out.PageDTO;
 import com.zhk.zhkopencart.dto.out.ProductLsitDTO;
 import com.zhk.zhkopencart.dto.out.ProductShowDTO;
-import com.zhk.zhkopencart.service.imp.ProductService;
+import com.zhk.zhkopencart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("product")
+@CrossOrigin
 public class ProductContorller {
 
     @Autowired
@@ -19,33 +23,41 @@ public class ProductContorller {
 
 
     @GetMapping("list")
-    public List<ProductLsitDTO> getUserList(@RequestParam(required = false) String productName,
-                                            @RequestParam(required = false) Double price,
-                                            @RequestParam(required = false)Integer quantity,
-                                            @RequestParam(required = false)Integer status,
-                                            @RequestParam(required = false,defaultValue = "1")Integer pageNum){
+    public PageDTO<ProductLsitDTO> getUserList(@RequestParam(required = false) String productName,
+                                               @RequestParam(required = false) Double price,
+                                               @RequestParam(required = false)Integer quantity,
+                                               @RequestParam(required = false)Integer status,
+                                               @RequestParam(required = false,defaultValue = "1")Integer pageNum){
 
+         Page<ProductLsitDTO> pageLsit =productService.getqueryList(productName,price,quantity,status,pageNum);
+        PageDTO<ProductLsitDTO> productLsitDTOPageDTO = new PageDTO<>();
 
-
-
-        return null;
+        productLsitDTOPageDTO.setPageNum(pageLsit.getPageNum());
+        productLsitDTOPageDTO.setPageSize(pageLsit.getPageSize());
+        productLsitDTOPageDTO.setTotal(pageLsit.getTotal());
+        productLsitDTOPageDTO.setList(pageLsit);
+        System.out.println(productLsitDTOPageDTO);
+        return productLsitDTOPageDTO;
     }
 
     @PostMapping("create")
-    public Integer create(@RequestPart(required = false)ProductCreateDTO productCreateDTO){
+    @Transactional
+    public Integer create(@RequestBody ProductCreateDTO productCreateDTO){
 
-        return null;
+       Integer id= productService.createProduct(productCreateDTO);
+        return id;
     }
 
     @PostMapping("update")
-    public void update(@RequestPart(required = false) ProductUpdateDTO productUpdateDTO){
-
+    @Transactional
+    public void update(@RequestBody ProductUpdateDTO productUpdateDTO){
+        productService.updateProdcut(productUpdateDTO);
     }
 
     @GetMapping("show")
     public ProductShowDTO show(@RequestParam(required = false) String productId){
-
-        return null;
+        ProductShowDTO productShowDTO= productService.getProductAndProductDetailById(productId);
+        return productShowDTO;
     }
 
 

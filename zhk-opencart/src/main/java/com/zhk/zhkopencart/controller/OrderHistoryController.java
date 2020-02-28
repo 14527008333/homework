@@ -1,5 +1,6 @@
 package com.zhk.zhkopencart.controller;
 
+import com.zhk.zhkopencart.po.OrderHistory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderHistoryController {
 
     @PostMapping("create")
-    public Integer create(@RequestPart(required = false)OrderHistory orderHistory){
+    public Integer create(@RequestPart(required = false) OrderHistory orderHistory){
         return null;
     }
 }

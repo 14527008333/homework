@@ -161,4 +161,33 @@
       sort_order = #{sortOrder,jdbcType=INTEGER}
     where product_id = #{productId,jdbcType=INTEGER}
   </update>
+  <select id="getqueryList"  resultType="com.zhk.zhkopencart.dto.out.ProductLsitDTO">
+    select product_id productId,product_name productName,
+           price,stock_quantity quantity,`status`,main_pic_url mainImageUrl
+    from jcart_product
+    <where>
+      <if test="productName != null">
+        and product_name = #{productName,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null">
+        and price = #{price,jdbcType=DOUBLE}
+      </if>
+      <if test="quantity != null">
+        and stock_quantity = #{quantity,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getProductAndProductDetailById"  resultType="com.zhk.zhkopencart.dto.out.ProductShowDTO">
+    select p.product_id productId,p.product_name productName,
+           p.price,p.product_abstract productAbstract,p.stock_quantity quantity,p.`status`,
+           p.main_pic_url mainImageUrl,pd.description description,p.discount,p.reword_points rewordPoints,
+           pd.other_pic_urls otherImageJson
+    from jcart_product p left join jcart_product_detail pd ON p.product_id=pd.product_id
+    where p.product_id=#{productId,jdbcType=INTEGER}
+  </select>
+
 </mapper>

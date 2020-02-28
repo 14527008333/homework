@@ -1,19 +1,20 @@
 package com.zhk.zhkopencart.controller;
 
 import com.zhk.zhkopencart.dto.in.AdministratorUpdateDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import com.zhk.zhkopencart.util.FileUploadUtil;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("image")
 public class ImageController {
 
     @PostMapping("upload")
-    public String upload(@RequestPart(required = false) MultipartFile multipartFile){
+    public String upload(HttpServletRequest request, @RequestParam(required = false) MultipartFile multipartFile){
+        String load = FileUploadUtil.load(request.getSession(), multipartFile, "/E:/我/git_library/homework/zhk-opencart/src/main/upload/mainUpload");
 
-        return null;
+        return load;
     }
 }

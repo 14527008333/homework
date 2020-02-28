@@ -1,6 +1,9 @@
 package com.zhk.zhkopencart.dto.out;
 
+import com.zhk.zhkopencart.po.ProductDetail;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ProductShowDTO {
@@ -11,15 +14,21 @@ public class ProductShowDTO {
 
     private Double price;
 
+    private String productAbstract;
+
     private Integer quantity;
 
     private Integer status;
 
     private String imageUrl;
 
+    private String description;
+
     private Double discount;
 
     private Integer rewordPoints;
 
-    private ProductDetail productDetail;
+    private String otherImageJson;
+
+    private List<String> otherImageUrls;
 }

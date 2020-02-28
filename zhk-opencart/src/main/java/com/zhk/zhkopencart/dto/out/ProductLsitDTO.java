@@ -15,6 +15,6 @@ public class ProductLsitDTO {
 
     private Integer status;
 
-    private String imageUrl;
+    private String mainImageUrl;
 
 }
