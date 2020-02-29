@@ -36,7 +36,6 @@ public class ProductContorller {
         productLsitDTOPageDTO.setPageSize(pageLsit.getPageSize());
         productLsitDTOPageDTO.setTotal(pageLsit.getTotal());
         productLsitDTOPageDTO.setList(pageLsit);
-        System.out.println(productLsitDTOPageDTO);
         return productLsitDTOPageDTO;
     }
 

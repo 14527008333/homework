@@ -167,7 +167,7 @@
     from jcart_product
     <where>
       <if test="productName != null">
-        and product_name = #{productName,jdbcType=VARCHAR}
+        and product_name like CONCAT("%",#{productName,jdbcType=VARCHAR},"%")
       </if>
       <if test="price != null">
         and price = #{price,jdbcType=DOUBLE}

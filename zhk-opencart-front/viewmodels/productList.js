@@ -6,7 +6,18 @@ var app = new Vue({
         price:null,
         quantity:null,
         status:null,
-        pageNum:1
+        pageNum:1,
+        selectstatus: [{
+            value: '0',
+            label: '未审核'
+          }, {
+            value: '1',
+            label: '上架'
+          }, {
+            value: '2',
+            label: '下架'
+          }],
+        
     },
     mounted() {
         console.log('view mounted');
@@ -14,7 +25,7 @@ var app = new Vue({
     },
     methods: {
         getProductList() {
-            axios.get('http://localhost:8080/product/list', {
+            axios.get('http://localhost:8081/product/list', {
                 params: {
                     productName: this.productName,
                     price: this.price,
@@ -35,6 +46,22 @@ var app = new Vue({
         pageClick(val){
             this.pageNum=val;
             this.getProductList();
+        },
+        queryProductClick(){
+            console.log("query click");
+            this.getProductList();
+        },
+        productShow(productId){
+            console.log("show "+productId);
+            location.href = 'http://127.0.0.1:8080/demo.html?productId=' + productId;
+        },
+        productupdate(productId){
+            console.log("update "+productId)
+            location.href = 'http://127.0.0.1:8080/demo.html?productId=' + productId;
+        },
+        insertProductClick(){
+            console.log("insert product")
+            location.href = 'http://127.0.0.1:8080/demo.html';
         }
         
     }
