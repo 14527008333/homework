@@ -39,7 +39,7 @@ public class ProductServiceImp implements ProductService {
         Product product = new Product();
         product.setProductCode(productCreateDTO.getProductCode());
         product.setProductName(productCreateDTO.getProductName());
-        product.setProductAbstract(productCreateDTO.getDescription());
+        product.setProductAbstract(productCreateDTO.getProductAbstract());
         product.setPrice(productCreateDTO.getPrice());
         product.setDiscount(productCreateDTO.getDiscount());
         product.setStockQuantity(productCreateDTO.getQuantity());
@@ -64,7 +64,7 @@ public class ProductServiceImp implements ProductService {
         product.setProductId(productUpdateDTO.getProductId());
         product.setProductCode(productUpdateDTO.getProductCode());
         product.setProductName(productUpdateDTO.getProductName());
-        product.setProductAbstract(productUpdateDTO.getDescription());
+        product.setProductAbstract(productUpdateDTO.getProductAbstract());
         product.setPrice(productUpdateDTO.getPrice());
         product.setDiscount(productUpdateDTO.getDiscount());
         product.setStockQuantity(productUpdateDTO.getQuantity());

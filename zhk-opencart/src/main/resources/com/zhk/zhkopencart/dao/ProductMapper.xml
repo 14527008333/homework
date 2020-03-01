@@ -182,9 +182,9 @@
   </select>
 
   <select id="getProductAndProductDetailById"  resultType="com.zhk.zhkopencart.dto.out.ProductShowDTO">
-    select p.product_id productId,p.product_name productName,
+    select p.product_id productId,p.product_name productName,p.product_code productCode,
            p.price,p.product_abstract productAbstract,p.stock_quantity quantity,p.`status`,
-           p.main_pic_url mainImageUrl,pd.description description,p.discount,p.reword_points rewordPoints,
+           p.main_pic_url imageUrl,pd.description description,p.discount,p.reword_points rewordPoints,
            pd.other_pic_urls otherImageJson
     from jcart_product p left join jcart_product_detail pd ON p.product_id=pd.product_id
     where p.product_id=#{productId,jdbcType=INTEGER}

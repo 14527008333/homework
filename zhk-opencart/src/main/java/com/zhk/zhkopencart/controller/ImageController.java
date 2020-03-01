@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("image")
+@CrossOrigin
 public class ImageController {
 
     @PostMapping("upload")

@@ -56,7 +56,7 @@
                 label="操作">
                 <template slot-scope="scope">
                   <el-button  icon="el-icon-view" @click="productShow(scope.row.productId)" circle></el-button>
-                  <el-button  icon="el-icon-edit" @click="productupdate(scope.row)" circle></el-button>
+                  <el-button  icon="el-icon-edit" @click="productupdate(scope.row.productId)" circle></el-button>
                 </template>
               </el-table-column>
             </el-table>

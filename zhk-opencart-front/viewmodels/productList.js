@@ -16,7 +16,7 @@ var app = new Vue({
           }, {
             value: '2',
             label: '下架'
-          }],
+          }]
         
     },
     mounted() {
@@ -57,11 +57,11 @@ var app = new Vue({
         },
         productupdate(productId){
             console.log("update "+productId)
-            location.href = 'http://127.0.0.1:8080/demo.html?productId=' + productId;
+            location.href = 'http://127.0.0.1:8080/productUpdate.html?productId=' + productId;
         },
         insertProductClick(){
             console.log("insert product")
-            location.href = 'http://127.0.0.1:8080/demo.html';
+            location.href = 'http://127.0.0.1:8080/productCreate.html';
         }
         
     }

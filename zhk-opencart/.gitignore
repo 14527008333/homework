@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+.idea/
+src/main/resources/application-exclude.properties
+src/main/upload/

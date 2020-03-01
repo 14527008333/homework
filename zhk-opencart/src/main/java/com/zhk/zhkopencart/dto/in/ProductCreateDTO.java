@@ -12,6 +12,8 @@ public class ProductCreateDTO {
 
     private String productCode;
 
+    private String productAbstract;
+
     private Double price;
 
     private Integer quantity;

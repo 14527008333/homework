@@ -12,6 +12,8 @@ public class ProductShowDTO {
 
     private String productName;
 
+    private String productCode;
+
     private Double price;
 
     private String productAbstract;

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/elementui.css">
+    <title>productUpdate</title>
+</head>
+
+<body>
+    <div id="app">
+        <el-input v-model="productName" placeholder="请输入商品名称"></el-input>
+        <el-input v-model="productCode" placeholder="请输入商品代码"></el-input>
+        <el-input v-model="price" placeholder="请输入商品价格"></el-input>
+        <el-input v-model="quantity" placeholder="请输入商品库存"></el-input>
+        <el-input v-model="discount" placeholder="请输入商品折扣"></el-input>
+        <el-input v-model="rewordPoints" placeholder="请输入购买商品所得积分"></el-input>
+        <el-input v-model="productAbstract" placeholder="商品简介"></el-input>
+        <textarea id='descriptionText' >{{description}}</textarea>
+        <el-select v-model="status" placeholder="请选择">
+            <el-option
+              v-for="item in selectstatus"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-upload ref="mainUpload" action="" :http-request="mainUploadRequest" :limit="1" accept="image/*"
+            :auto-upload="false" :on-change="onMainChange" >
+            <el-button slot="trigger" size="small" type="primary">选取主图</el-button>
+            <el-button size="small" type="success" @click="uploadMainClick">上传</el-button>
+        </el-upload>
+        上传后主图：<br><el-link type="primary">{{imageUrl}}</el-link>
+        <el-upload ref="otherUpload" multiple action="" :http-request="otherUploadRequest" :limit="10" accept="image/*"
+            :auto-upload="false" :on-change="onOtherChange" :on-remove="onOtherRemove">
+            <el-button slot="trigger" size="small" type="primary">选取其他图片</el-button>
+            <el-button size="small" type="success" @click="uploadOtherClick">上传</el-button>
+        </el-upload>
+
+        上传后其他图：
+        <div v-for="item in otherImageUrls">
+            <el-link type="primary">{{item}}</el-link>
+        </div><br>
+        
+        <el-button type="primary" @click="productUpdateClick">发布</el-button>
+    </div>
+    
+    <script src="assets\vendor\tinymce\tinymce.min.js"></script>
+    <script src="assets/js/axios.min.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/elementui.js"></script>
+    <script src="viewmodels/productUpdate.js"></script>
+
+</body>
+
+</html>
