@@ -15,6 +15,7 @@
     administrator_id, username, real_name, email, encrypted_password, status, create_time, 
     avatar_url
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -126,4 +127,11 @@
       avatar_url = #{avatarUrl,jdbcType=VARCHAR}
     where administrator_id = #{administratorId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByUsername"  resultType="com.zhk.zhkopencart.po.Administrator">
+    select
+    <include refid="Base_Column_List" />
+    from jcart_administrator
+    where username = #{userName,jdbcType=VARCHAR}
+  </select>
 </mapper>
