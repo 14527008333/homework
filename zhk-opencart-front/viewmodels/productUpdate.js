@@ -28,14 +28,15 @@ var app = new Vue({
           }],
     },
     mounted() {
-        var url = new URL(location.href);
-       var a= url.searchParams.get("productId")
-       this.productId=a;
-        alert(a);
         tinymce.init({
             selector: '#descriptionText',
           });
-          this.getProductById(this.productId);
+        var url = new URL(location.href);
+        var a= url.searchParams.get("productId")
+        this.productId=a;
+        alert(a);
+        
+        this.getProductById(this.productId);
     },
     methods:{
         getProductById(val){
@@ -58,8 +59,8 @@ var app = new Vue({
                     app.rewordPoints=response.data.rewordPoints;
                     app.otherImageUrls=response.data.otherImageUrls;
                 })
-                .catch(function (error) {
-                    console.error(error);
+                .catch(function () {
+                    console.error("error");
                 });
         },
         onMainChange(val){

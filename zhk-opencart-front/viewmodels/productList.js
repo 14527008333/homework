@@ -53,7 +53,7 @@ var app = new Vue({
         },
         productShow(productId){
             console.log("show "+productId);
-            location.href = 'http://127.0.0.1:8080/demo.html?productId=' + productId;
+            location.href = 'http://127.0.0.1:8080/productShow.html?productId=' + productId;
         },
         productupdate(productId){
             console.log("update "+productId)

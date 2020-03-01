@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/elementui.css">
+    <title>productUpdate</title>
+</head>
+
+<body>
+    <div id="app">
+        <el-input v-model="productName"  :disabled="true" placeholder="请输入商品名称"></el-input>
+        <el-input v-model="productCode"  :disabled="true" placeholder="请输入商品代码"></el-input>
+        <el-input v-model="price"  :disabled="true" placeholder="请输入商品价格"></el-input>
+        <el-input v-model="quantity"  :disabled="true" placeholder="请输入商品库存"></el-input>
+        <el-input v-model="discount"  :disabled="true" placeholder="请输入商品折扣"></el-input>
+        <el-input v-model="rewordPoints"  :disabled="true" placeholder="请输入购买商品所得积分"></el-input>
+        <el-input v-model="productAbstract"  :disabled="true" placeholder="商品简介"></el-input>
+        <textarea id='descriptionText'  :disabled="true" >{{description}}</textarea>
+        <el-select v-model="status"  :disabled="true" placeholder="请选择">
+            <el-option
+              v-for="item in selectstatus"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select><br>
+        
+        上传后主图：<br><el-link type="primary">{{imageUrl}}</el-link><br>
+
+        上传后其他图：
+        <div v-for="item in otherImageUrls">
+            <el-link type="primary">{{item}}</el-link>
+        </div><br>
+        
+    </div>
+    
+    <script src="assets\vendor\tinymce\tinymce.min.js"></script>
+    <script src="assets/js/axios.min.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/elementui.js"></script>
+    <script src="viewmodels/productShow.js"></script>
+
+</body>
+
+</html>
