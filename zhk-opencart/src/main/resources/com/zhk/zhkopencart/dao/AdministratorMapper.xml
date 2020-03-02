@@ -130,8 +130,23 @@
 
   <select id="selectByUsername"  resultType="com.zhk.zhkopencart.po.Administrator">
     select
-    <include refid="Base_Column_List" />
+    administrator_id administratorId,username,real_name realName,email,encrypted_password encryptedPassword,
+		`status`,create_time createTime,avatar_url avatarUrl
     from jcart_administrator
     where username = #{userName,jdbcType=VARCHAR}
   </select>
+  <select id="getAdministratorById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    administrator_id administratorId,username,real_name realName,email,
+		create_time createTime,avatar_url avatarUrl
+    from jcart_administrator
+    where administrator_id = #{administratorId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getUserList" resultMap="BaseResultMap">
+    select
+    administrator_id administratorId, username userName, real_name realName, email, create_time createTime, avatar_url avatarUrl
+    from jcart_administrator
+  </select>
+
 </mapper>

@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.zhk.zhkopencart.dto.out.AdministratorLoginOutDTO;
 import com.zhk.zhkopencart.po.Administrator;
+import com.zhk.zhkopencart.vo.AdministratorLoginVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +57,7 @@ public class JWTUtil {
         return administratorLoginOutDTO;
     }
 
-/*    public AdministratorLoginVO verifyToken(String token) {
+       public AdministratorLoginVO verifyToken(String token) {
         JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(issuer)
                 .build();
@@ -67,5 +68,5 @@ public class JWTUtil {
         administratorLoginVO.setAdministratorId(jwt.getClaim("administratorId").asInt());
         administratorLoginVO.setUsername(jwt.getSubject());
         return administratorLoginVO;
-    }*/
+    }
 }

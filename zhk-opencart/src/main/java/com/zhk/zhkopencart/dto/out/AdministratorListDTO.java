@@ -11,8 +11,6 @@ public class AdministratorListDTO {
 
     private String userName;
 
-    private Integer status;
-
     private Date createTime;
 
     private String realName;

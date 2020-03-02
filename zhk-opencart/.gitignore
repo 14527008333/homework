@@ -30,5 +30,5 @@ build/
 ### VS Code ###
 .vscode/
 .idea/
-src/main/resources/application-exclude.properties
-src/main/upload/
+zhk-opencart/src/main/resources/application.properties
+zhk-opencart/src/main/upload/

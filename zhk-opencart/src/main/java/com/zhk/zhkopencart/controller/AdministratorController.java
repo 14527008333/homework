@@ -1,12 +1,14 @@
 package com.zhk.zhkopencart.controller;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.github.pagehelper.Page;
 import com.zhk.zhkopencart.constant.ExceptionConstant;
 import com.zhk.zhkopencart.dto.in.AdministratorCreateDTO;
 import com.zhk.zhkopencart.dto.in.AdministratorUpdateDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorListDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorLoginOutDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorShowDTO;
+import com.zhk.zhkopencart.dto.out.PageDTO;
 import com.zhk.zhkopencart.exception.ClientException;
 import com.zhk.zhkopencart.po.Administrator;
 import com.zhk.zhkopencart.service.AdministratorServer;
@@ -28,13 +30,17 @@ public class AdministratorController {
     private JWTUtil jwtUtil;
 
     @GetMapping("list")
-    public List<AdministratorListDTO> getUserList(@RequestParam(required = false) String userName,
-                                                  @RequestParam(required = false) Integer status,
-                                                  @RequestParam(required = false)Long createTime,
-                                                  @RequestParam(required = false)String realName,
-                                                  @RequestParam(required = false,defaultValue = "1")Integer pageNum){
+    public PageDTO<AdministratorListDTO> getUserList(@RequestParam(required = false,defaultValue = "1")Integer pageNum){
 
-        return null;
+        Page<AdministratorListDTO> administratorListDTOS= administratorServer.getUserList(pageNum);
+
+        PageDTO<AdministratorListDTO> administratorListDTOPageDTO = new PageDTO<>();
+        administratorListDTOPageDTO.setPageNum(administratorListDTOS.getPageNum());
+        administratorListDTOPageDTO.setPageSize(administratorListDTOS.getPageSize());
+        administratorListDTOPageDTO.setTotal(administratorListDTOS.getTotal());
+        administratorListDTOPageDTO.setList(administratorListDTOS);
+
+        return administratorListDTOPageDTO;
     }
 
 
@@ -46,7 +52,7 @@ public class AdministratorController {
             throw new ClientException(ExceptionConstant.ADMINISTRATOR_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.ADMINISTRATOR_USERNAME_NOT_EXIST_ERRMSG);
         }
         //对密码进行校验
-        BCrypt.Result verify = BCrypt.verifyer().verify(userName.toCharArray(), administrator.getEncryptedPassword());
+        BCrypt.Result verify = BCrypt.verifyer().verify(password.toCharArray(), administrator.getEncryptedPassword());
 
         //校验通过发出Token令牌否则抛出密码错误
        if(verify.verified){
@@ -59,19 +65,29 @@ public class AdministratorController {
     }
 
     @GetMapping("show")
-    public AdministratorShowDTO show(@RequestParam(required = false) Integer administratorId){
+    public AdministratorShowDTO show(@RequestAttribute Integer administratorId){
+        Administrator administrator = administratorServer.getAdministratorById(administratorId);
+        AdministratorShowDTO administratorShowDTO = new AdministratorShowDTO();
+        administratorShowDTO.setAdministratorId(administrator.getAdministratorId());
+        administratorShowDTO.setUserName(administrator.getUsername());
+        administratorShowDTO.setRealName(administrator.getRealName());
+        administratorShowDTO.setEmail(administrator.getEmail());
+        administratorShowDTO.setCreateTime(administrator.getCreateTime());
+        administratorShowDTO.setAvatarUrl(administrator.getAvatarUrl());
 
-        return null;
+        return administratorShowDTO;
     }
 
     @PostMapping("create")
-    public Integer create(@RequestPart(required = false)AdministratorCreateDTO administratorCreateDTO){
+    public Integer create(@RequestPart(required = false)AdministratorCreateDTO administratorCreateDTO,
+                          @RequestAttribute Integer administratorId){
 
         return null;
     }
 
     @PostMapping("update")
-    public void update(@RequestPart(required = false) AdministratorUpdateDTO administratorUpdateDTO){
+    public void update(@RequestPart(required = false) AdministratorUpdateDTO administratorUpdateDTO,
+                       @RequestAttribute Integer administratorId){
 
     }
 

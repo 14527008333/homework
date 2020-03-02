@@ -1,5 +1,8 @@
 package com.zhk.zhkopencart.dao;
 
+import com.github.pagehelper.Page;
+import com.zhk.zhkopencart.dto.out.AdministratorListDTO;
+import com.zhk.zhkopencart.dto.out.AdministratorShowDTO;
 import com.zhk.zhkopencart.po.Administrator;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +22,8 @@ public interface AdministratorMapper {
     int updateByPrimaryKey(Administrator record);
 
     Administrator selectByUsername(@Param("userName") String userName);
+
+    AdministratorShowDTO getAdministratorById(@Param("administratorId")Integer administratorId);
+
+    Page<AdministratorListDTO> getUserList();
 }
