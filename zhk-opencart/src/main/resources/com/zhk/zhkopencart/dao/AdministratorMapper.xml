@@ -143,7 +143,7 @@
     where administrator_id = #{administratorId,jdbcType=INTEGER}
   </select>
 
-  <select id="getUserList" resultMap="BaseResultMap">
+  <select id="getUserList" resultType="com.zhk.zhkopencart.dto.out.AdministratorListDTO">
     select
     administrator_id administratorId, username userName, real_name realName, email, create_time createTime, avatar_url avatarUrl
     from jcart_administrator
