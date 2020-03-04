@@ -34,6 +34,7 @@
         <div v-for="item in otherImageUrls">
             <el-link type="primary">{{item}}</el-link>
         </div><br>
+        <el-input v-model="quantity" type="number" minlength="0" placeholder="购买数量"></el-input>
         <el-button type="primary" @click="addShoppingCart" round>添加到购物车</el-button>
     </div>
     

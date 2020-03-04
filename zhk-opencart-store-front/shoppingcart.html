@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/elementui.css">
-    <title>demo</title>
+    <title>shoppingcart</title>
 </head>
 
 <body>
@@ -33,7 +33,7 @@
               <el-table-column
                 label="购买数量">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.num" type="number" placeholder="请输入数量"  ></el-input>
+                  <el-input v-model="scope.row.num" type="number" minlength="0" placeholder="请输入数量"  ></el-input>
                   <el-button size="mini" @click="updateNum(scope.$index, scope.row.num)">修改</el-button>
               </template>
               </el-table-column>
@@ -56,7 +56,9 @@
               </el-table-column>
             </el-table>
           </template>
+          购物车商品总价格:{{totalPrice}}
     </div>
+
 
     <script src="assets/js/axios.min.js"></script>
     <script src="assets/js/common.js"></script>
