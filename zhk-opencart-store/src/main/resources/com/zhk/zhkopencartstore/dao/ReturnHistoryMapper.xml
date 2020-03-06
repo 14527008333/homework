@@ -13,7 +13,7 @@
     return_history_id, return_id, time, return_status, comment, customer_notified
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from jcart_return_history
     where return_history_id = #{returnHistoryId,jdbcType=BIGINT}
@@ -26,9 +26,9 @@
     <selectKey keyProperty="returnHistoryId" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into jcart_return_history (return_id, time, return_status, 
+    insert into jcart_return_history (return_id, time, return_status,
       comment, customer_notified)
-    values (#{returnId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{returnStatus,jdbcType=TINYINT}, 
+    values (#{returnId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{returnStatus,jdbcType=TINYINT},
       #{comment,jdbcType=VARCHAR}, #{customerNotified,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.zhk.zhkopencartstore.po.ReturnHistory">
@@ -101,4 +101,11 @@
       customer_notified = #{customerNotified,jdbcType=BIT}
     where return_history_id = #{returnHistoryId,jdbcType=BIGINT}
   </update>
+
+  <select id="selectbyReturnId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from jcart_return_history
+    where return_id = #{returnId,jdbcType=TINYINT}
+  </select>
 </mapper>

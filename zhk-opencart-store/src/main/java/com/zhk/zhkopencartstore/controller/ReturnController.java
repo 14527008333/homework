@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.zhk.zhkopencartstore.dto.in.ReturnApplyInDTO;
 import com.zhk.zhkopencartstore.dto.out.PageOutDTO;
 import com.zhk.zhkopencartstore.dto.out.ReturnLsitOutDTO;
+import com.zhk.zhkopencartstore.dto.out.ReturnShowOutDTO;
 import com.zhk.zhkopencartstore.enums.ReturnStatusEnum;
 import com.zhk.zhkopencartstore.po.Return;
 import com.zhk.zhkopencartstore.service.ReturnService;
@@ -58,9 +59,10 @@ public class ReturnController {
     }
 
     @GetMapping("list")
-    public PageOutDTO<ReturnLsitOutDTO> ReturnList(@RequestParam(required = false,defaultValue = "1")Integer pageNum){
+    public PageOutDTO<ReturnLsitOutDTO> returnList(@RequestParam(required = false,defaultValue = "1")Integer pageNum,
+                                                   @RequestAttribute Integer customerId){
 
-        Page<Return> returnList = returnService.getReturnList(pageNum);
+        Page<Return> returnList = returnService.getReturnList(pageNum,customerId);
 
         List<ReturnLsitOutDTO> returnLsitOutDTOS= returnList.stream().map(aReturn->{
             ReturnLsitOutDTO returnLsitOutDTO = new ReturnLsitOutDTO();
@@ -82,5 +84,12 @@ public class ReturnController {
         return returnLsitOutDTOPageOutDTO;
     }
 
+    @GetMapping("show")
+    public ReturnShowOutDTO returnShow(@RequestParam Integer returnId) {
 
-}
+        ReturnShowOutDTO returnShowOutDTO=returnService.returnShow(returnId);
+        return null;
+    }
+
+
+    }

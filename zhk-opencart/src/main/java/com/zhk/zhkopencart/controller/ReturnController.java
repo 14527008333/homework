@@ -24,7 +24,7 @@ public class ReturnController {
     }
 
     @GetMapping("show")
-    public ReturnShowDTO show(@RequestParam(required = false) Integer returnId){
+    public ReturnShowDTO show(@RequestParam Integer returnId){
 
         return null;
     }

@@ -2,6 +2,7 @@ package com.zhk.zhkopencartstore.dao;
 
 import com.github.pagehelper.Page;
 import com.zhk.zhkopencartstore.po.Return;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,5 +20,5 @@ public interface ReturnMapper {
 
     int updateByPrimaryKey(Return record);
 
-    Page<Return> getReturnList();
+    Page<Return> getReturnList(@Param("customerId") Integer customerId);
 }

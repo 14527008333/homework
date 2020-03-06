@@ -24,7 +24,7 @@ public class OrderController {
     }
 
     @GetMapping("show")
-    public OrderShowDTO show(@RequestParam(required = false) Integer orderId){
+    public OrderShowDTO show(@RequestParam Integer orderId){
         return null;
     }
 

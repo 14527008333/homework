@@ -32,7 +32,7 @@ public class ProductContorller {
 
 
     @GetMapping("show")
-    public ProductShowDTO show(@RequestParam(required = false) Integer productId){
+    public ProductShowDTO show(@RequestParam Integer productId){
         ProductShowDTO productShowDTO= productService.getProductAndProductDetailById(productId);
         return productShowDTO;
     }

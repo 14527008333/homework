@@ -54,7 +54,7 @@ public class ProductContorller {
     }
 
     @GetMapping("show")
-    public ProductShowDTO show(@RequestParam(required = false) String productId){
+    public ProductShowDTO show(@RequestParam String productId){
         ProductShowDTO productShowDTO= productService.getProductAndProductDetailById(productId);
         return productShowDTO;
     }
