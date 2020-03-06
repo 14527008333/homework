@@ -15,7 +15,5 @@ public class CustomerShowOutDTO {
 
     private String mobile;
 
-    private Byte newsSubscribed;
-
     private Long CreateTime;
 }

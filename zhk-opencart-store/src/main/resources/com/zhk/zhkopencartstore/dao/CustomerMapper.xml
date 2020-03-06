@@ -196,4 +196,11 @@
       default_address_id = #{defaultAddressId,jdbcType=INTEGER}
     where customer_id = #{customerId,jdbcType=INTEGER}
   </update>
+
+  <select id="getCustomerByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from jcart_customer
+    where username = #{userName,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -1,7 +1,10 @@
 package com.zhk.zhkopencartstore.dao;
 
 import com.zhk.zhkopencartstore.po.Customer;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CustomerMapper {
     int deleteByPrimaryKey(Integer customerId);
 
@@ -14,4 +17,6 @@ public interface CustomerMapper {
     int updateByPrimaryKeySelective(Customer record);
 
     int updateByPrimaryKey(Customer record);
+
+    Customer getCustomerByUserName(@Param("userName") String userName);
 }
