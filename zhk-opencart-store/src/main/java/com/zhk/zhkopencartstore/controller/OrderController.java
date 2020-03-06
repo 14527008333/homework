@@ -24,10 +24,10 @@ public class OrderController {
 
     @PostMapping("checkout")
     @Transactional
-    public Integer orderCheckout(@RequestBody OrdercheckoutInDTO ordercheckoutInDTO,
+    public Long orderCheckout(@RequestBody OrdercheckoutInDTO ordercheckoutInDTO,
                                  @RequestAttribute Integer customerId){
-       Integer orderId= orderService.orderCheckout(ordercheckoutInDTO,customerId);
-        return null;
+       Long orderId= orderService.orderCheckout(ordercheckoutInDTO,customerId);
+        return orderId;
     }
 
     @GetMapping("list")
@@ -59,7 +59,7 @@ public class OrderController {
 
         OrderShowOutDTO orderShowOutDTO= orderService.OrderShowById(orderId);
 
-        return null;
+        return orderShowOutDTO;
     }
 
 }

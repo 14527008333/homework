@@ -1,8 +1,12 @@
 package com.zhk.zhkopencartstore.dao;
 
+import com.github.pagehelper.Page;
 import com.zhk.zhkopencartstore.po.Return;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ReturnMapper {
+
     int deleteByPrimaryKey(Integer returnId);
 
     int insert(Return record);
@@ -14,4 +18,6 @@ public interface ReturnMapper {
     int updateByPrimaryKeySelective(Return record);
 
     int updateByPrimaryKey(Return record);
+
+    Page<Return> getReturnList();
 }

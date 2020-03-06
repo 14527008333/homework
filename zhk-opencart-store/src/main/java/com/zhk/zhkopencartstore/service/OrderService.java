@@ -6,7 +6,7 @@ import com.zhk.zhkopencartstore.dto.out.OrderShowOutDTO;
 import com.zhk.zhkopencartstore.po.Order;
 
 public interface OrderService {
-    Integer orderCheckout(OrdercheckoutInDTO ordercheckoutInDTO, Integer customerId);
+    Long orderCheckout(OrdercheckoutInDTO ordercheckoutInDTO, Integer customerId);
 
     Page<Order> getOrderList(Integer pageNum, Integer customerId);
 

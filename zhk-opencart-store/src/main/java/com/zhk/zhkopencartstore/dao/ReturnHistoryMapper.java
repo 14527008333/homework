@@ -1,7 +1,9 @@
 package com.zhk.zhkopencartstore.dao;
 
 import com.zhk.zhkopencartstore.po.ReturnHistory;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ReturnHistoryMapper {
     int deleteByPrimaryKey(Long returnHistoryId);
 

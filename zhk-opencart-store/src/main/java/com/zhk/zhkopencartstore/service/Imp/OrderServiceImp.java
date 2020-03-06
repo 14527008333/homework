@@ -43,7 +43,7 @@ public class OrderServiceImp implements OrderService {
     private OrderHistoryMapper orderHistoryMapper;
 
     @Override
-    public Integer orderCheckout(OrdercheckoutInDTO ordercheckoutInDTO, Integer customerId) {
+    public Long orderCheckout(OrdercheckoutInDTO ordercheckoutInDTO, Integer customerId) {
 
         List<OrderProductInDTO> orderProducts = ordercheckoutInDTO.getOrderProducts();
 
@@ -73,7 +73,7 @@ public class OrderServiceImp implements OrderService {
         Integer orderId = orderMapper.insertSelective(order);
 
         OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setOrderId(new Long(orderId));
+        orderDetail.setOrderId(new Long(order.getOrderId()));
         orderDetail.setShipMethod(ordercheckoutInDTO.getShipMethod());
         Address address = addressMapper.selectByPrimaryKey(ordercheckoutInDTO.getShipAddressId());
         orderDetail.setShipAddress(address.getContent());
@@ -86,7 +86,7 @@ public class OrderServiceImp implements OrderService {
         orderDetail.setOrderProducts(JSON.toJSONString(orderProductVOS));
 
         Integer orderDetailId = orderDetailMapper.insertSelective(orderDetail);
-        return orderId;
+        return order.getOrderId();
     }
 
     @Override
@@ -100,21 +100,6 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public OrderShowOutDTO OrderShowById(Integer orderId) {
-       /* private Long orderId;
-        private Byte status;
-        private Double totalPrice;
-        private Integer rewordPoints;
-        private Long createTimestamp;
-        private Long updateTimestamp;
-        private Short shipMethod;
-        private String shipAddress;
-        private Double shipPrice;
-        private Short payMethod;
-        private String invoiceAddress;
-        private Double invoicePrice;
-        private String comment;
-        private List<OrderProductVO> orderProducts;
-        private List<OrderHistoryListOutDTO> orderHistories;*/
         Order order = orderMapper.selectByPrimaryKey(new Long(orderId));
         OrderDetail orderDetail = orderDetailMapper.selectByPrimaryKey(new Long(orderId));
         OrderShowOutDTO orderShowOutDTO = new OrderShowOutDTO();
