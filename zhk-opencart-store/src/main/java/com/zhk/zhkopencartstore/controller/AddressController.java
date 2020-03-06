@@ -3,6 +3,7 @@ package com.zhk.zhkopencartstore.controller;
 import com.github.pagehelper.Page;
 import com.zhk.zhkopencartstore.dto.in.AddressUpdateInDTO;
 import com.zhk.zhkopencartstore.dto.out.AddressLsitOutDTO;
+import com.zhk.zhkopencartstore.dto.out.AddressShowOutDTO;
 import com.zhk.zhkopencartstore.dto.out.PageOutDTO;
 import com.zhk.zhkopencartstore.po.Address;
 import com.zhk.zhkopencartstore.service.AddressService;
@@ -44,7 +45,7 @@ public class AddressController {
         return addressLsitOutDTOPageOutDTO;
     }
 
-    @GetMapping("addressCreate")
+    @PostMapping("addressCreate")
     public Integer addressCreate(@RequestBody Address address,
                                  @RequestAttribute Integer customerId){
         address.setCustomerId(customerId);
@@ -52,8 +53,20 @@ public class AddressController {
         return addressId;
     }
 
-    @GetMapping("addressUpdate")
+    @PostMapping("addressUpdate")
     public void addressUpdate(@RequestBody AddressUpdateInDTO addressUpdateInDTO){
         addressService.addressUpdate(addressUpdateInDTO);
     }
+
+    @GetMapping("show")
+    public AddressShowOutDTO addressShow(@RequestParam Integer addressId){
+        AddressShowOutDTO addressShowOutDTO= addressService.getAddressById(addressId);
+        return addressShowOutDTO;
+    }
+
+    @PostMapping("delete")
+    public void addressDeleteById(@RequestParam Integer addressId){
+        addressService.deleteByPrimaryKey(addressId);
+    }
+
 }
