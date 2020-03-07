@@ -23,4 +23,9 @@ public class CustomerServiceImp implements CustomerService {
         Customer customer = customerMapper.selectByPrimaryKey(customerId);
         return customer;
     }
+
+    @Override
+    public void updateProfile(Customer customer) {
+        customerMapper.updateByPrimaryKeySelective(customer);
+    }
 }

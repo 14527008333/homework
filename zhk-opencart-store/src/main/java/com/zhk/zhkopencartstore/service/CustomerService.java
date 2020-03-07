@@ -6,4 +6,6 @@ public interface CustomerService {
     Customer getCustomerByUserName(String userName);
 
     Customer getProfileById(Integer customerId);
+
+    void updateProfile(Customer customer);
 }

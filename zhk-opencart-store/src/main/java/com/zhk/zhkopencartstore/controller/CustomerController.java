@@ -35,7 +35,7 @@ public class CustomerController {
     public CustomerLoginOutDTO registerCustomer(@RequestParam String userName, @RequestParam String password) throws ClientException {
        Customer customer= customerService.getCustomerByUserName(userName);
         if(customer==null){
-            throw new ClientException(ExceptionConstant.ADMINISTRATOR_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.ADMINISTRATOR_USERNAME_NOT_EXIST_ERRMSG);
+            throw new ClientException(ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRMSG);
         }
         //对密码进行校验
         BCrypt.Result verify = BCrypt.verifyer().verify(password.toCharArray(), customer.getEncryptedPassword());
@@ -46,23 +46,11 @@ public class CustomerController {
             return administratorLoginOutDTO;
         }
         else{
-            throw new ClientException(ExceptionConstant.ADNINISTRATOR_PASSWORD_INVALID_ERRCODE,ExceptionConstant.ADNINISTRATOR_PASSWORD_INVALID_ERRMSG);
+            throw new ClientException(ExceptionConstant.CUSTOMER_PASSWORD_INVALID_ERRCODE,ExceptionConstant.CUSTOMER_PASSWORD_INVALID_ERRMSG);
         }
 
     }
-   /* private String username;
 
-    private String realName;
-
-    private String avatarUrl;
-
-    private String email;
-
-    private String mobile;
-
-    private Byte newsSubscribed;
-
-    private Long CreateTime;*/
     @GetMapping("getProfile")
     public CustomerShowOutDTO getProfile(@RequestAttribute Integer customerId){
         Customer customer= customerService.getProfileById(customerId);
@@ -79,11 +67,37 @@ public class CustomerController {
     @GetMapping("updateProfile")
     public void updateProfile(@RequestBody CustomerUpdateInDTO customerUpdateInDTO, @RequestAttribute Integer customerId){
 
+        Customer customer = new Customer();
+        customer.setUsername(customerUpdateInDTO.getUsername());
+        customer.setRealName(customerUpdateInDTO.getRealName());
+        customer.setAvatarUrl(customerUpdateInDTO.getAvatarUrl());
+        customer.setEmail(customerUpdateInDTO.getEmail());
+        customer.setMobile(customerUpdateInDTO.getMobile());
+        if(customerUpdateInDTO.getNewsSubscribed()==0||customerUpdateInDTO.getNewsSubscribed()==null){
+            customer.setNewsSubscribed(false);
+        }else if (customerUpdateInDTO.getNewsSubscribed()==1){
+            customer.setNewsSubscribed(true);
+        }
+        customer.setDefaultAddressId(customerUpdateInDTO.getDefaultAddressId());
+        customerService.updateProfile(customer);
     }
 
     @GetMapping("customerChangePassword")
     public void customerChangePassword(@RequestBody CustomerChangerPasswordInDTO customerChangerPasswordInDTO,
-                                       @RequestAttribute Integer customerId){
+                                       @RequestAttribute Integer customerId) throws ClientException {
+        //根据customerId获取用户对象，得到密码，判断原始密码是否正确
+        Customer customerById = customerService.getProfileById(customerId);
+        BCrypt.Result verify = BCrypt.verifyer().verify(customerChangerPasswordInDTO.getOriginalPassword().toCharArray(), customerById.getEncryptedPassword());
+
+        if(verify.verified){
+
+            String newPassword = BCrypt.withDefaults().hashToString(12, customerChangerPasswordInDTO.getNewPassword().toCharArray());
+            customerById.setEncryptedPassword(newPassword);
+            customerService.updateProfile(customerById);
+        }else{
+            throw new ClientException(ExceptionConstant.CUSTOMER_PASSWORD_INVALID_ERRCODE,ExceptionConstant.CUSTOMER_PASSWORD_INVALID_ERRMSG);
+        }
+
 
     }
 }
