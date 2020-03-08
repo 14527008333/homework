@@ -3,12 +3,14 @@ package com.zhk.zhkopencart.controller;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.github.pagehelper.Page;
 import com.zhk.zhkopencart.constant.ExceptionConstant;
+import com.zhk.zhkopencart.dto.in.AdministratorChangePasswordInDTO;
 import com.zhk.zhkopencart.dto.in.AdministratorCreateDTO;
 import com.zhk.zhkopencart.dto.in.AdministratorUpdateDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorListDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorLoginOutDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorShowDTO;
 import com.zhk.zhkopencart.dto.out.PageDTO;
+import com.zhk.zhkopencart.enums.AdministratorStatusEnum;
 import com.zhk.zhkopencart.exception.ClientException;
 import com.zhk.zhkopencart.po.Administrator;
 import com.zhk.zhkopencart.service.AdministratorServer;
@@ -16,6 +18,7 @@ import com.zhk.zhkopencart.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -78,17 +81,60 @@ public class AdministratorController {
 
         return administratorShowDTO;
     }
+    @PostMapping("createAdministrator")
+    public Integer create(@RequestBody AdministratorCreateDTO administratorCreateDTO){
 
-    @PostMapping("create")
-    public Integer create(@RequestPart(required = false)AdministratorCreateDTO administratorCreateDTO,
-                          @RequestAttribute Integer administratorId){
+        Administrator administrator = new Administrator();
 
-        return null;
+        administrator.setUsername(administratorCreateDTO.getUserName());
+        administrator.setRealName(administratorCreateDTO.getRealName());
+        administrator.setEmail(administratorCreateDTO.getEmail());
+        administrator.setAvatarUrl(administratorCreateDTO.getAvatarUrl());
+        String bCryptAdminPwd = BCrypt.withDefaults().hashToString(12, administratorCreateDTO.getPassword().toCharArray());
+        administrator.setEncryptedPassword(bCryptAdminPwd);
+        administrator.setStatus((byte)AdministratorStatusEnum.启用.ordinal());
+        administrator.setCreateTime(new Date());
+
+       Integer administratorId= administratorServer.create(administrator);
+
+        return administratorId;
     }
 
-    @PostMapping("update")
-    public void update(@RequestPart(required = false) AdministratorUpdateDTO administratorUpdateDTO,
+
+    @PostMapping("updateOneself")
+    public void updateOneself(@RequestBody AdministratorUpdateDTO administratorUpdateDTO,
                        @RequestAttribute Integer administratorId){
+        Administrator administrator = new Administrator();
+
+        administrator.setAdministratorId(administratorId);
+        administrator.setUsername(administratorUpdateDTO.getUserName());
+        administrator.setRealName(administratorUpdateDTO.getRealName());
+        administrator.setEmail(administratorUpdateDTO.getEmail());
+        administrator.setAvatarUrl(administratorUpdateDTO.getAvatarUrl());
+
+        administratorServer.update(administrator);
+    }
+
+
+    @PostMapping("administratorChangePassword")
+    public void administratorChangePassword(@RequestBody AdministratorChangePasswordInDTO administratorChangePasswordInDTO,
+                              @RequestAttribute Integer administratorId) throws ClientException {
+
+        Administrator administratorById = administratorServer.getAdministratorById(administratorId);
+        String encryptedPassword = administratorById.getEncryptedPassword();
+        String originalPassword = administratorChangePasswordInDTO.getOriginalPassword();
+        String newPassword = administratorChangePasswordInDTO.getNewPassword();
+        if(originalPassword==null||newPassword==null){
+            throw new ClientException(ExceptionConstant.ADNINISTRATOR_PASSWORD_NOT_EXIST_ERRCODE,ExceptionConstant.ADNINISTRATOR_PASSWORD_NOT_EXIST_ERRMSG);
+        }
+        BCrypt.Result verify = BCrypt.verifyer().verify(originalPassword.toCharArray(), encryptedPassword);
+        if(verify.verified){
+            String newBCryptPwd = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
+            administratorById.setEncryptedPassword(newBCryptPwd);
+            administratorServer.update(administratorById);
+        }else {
+            throw new ClientException(ExceptionConstant.ADNINISTRATOR_PASSWORD_INVALID_ERRCODE,ExceptionConstant.ADNINISTRATOR_PASSWORD_INVALID_ERRMSG);
+        }
 
     }
 

@@ -16,4 +16,8 @@ public interface AdministratorServer {
     Administrator getAdministratorById(Integer administratorId);
 
     Page<AdministratorListDTO> getUserList(Integer pageNum);
+
+    Integer create(Administrator administrator);
+
+    void update(Administrator administrator);
 }

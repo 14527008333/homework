@@ -15,6 +15,4 @@ public class AdministratorUpdateDTO{
 
     private String avatarUrl;
 
-    private String password;
-
 }

@@ -142,16 +142,18 @@ public class CustomerController {
     @PostMapping("getPwdResetCode")
     public void getPwdResetCode(@RequestParam(required = false) String email) throws ClientException {
 
+        //判断邮箱是否为空
         if(email==null){
             throw new ClientException(ExceptionConstant.CUSTOMER_INPUT_EMAIL_IS_EMPTY_ERRCODE,ExceptionConstant.CUSTOMER_INPUT_EMAIL_IS_EMPTY_ERRMSG);
         }
 
+        //判断是否存在该邮箱的用户
         Customer profileById = customerService.getCustomerByEmail(email);
-
         if(profileById==null){
             throw new ClientException(ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRMSG);
         }
 
+        //获取随机值 并为用户发送邮箱验证码
         byte[] bytes = secureRandom.generateSeed(6);
         String emailCode = DatatypeConverter.printHexBinary(bytes);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -160,38 +162,46 @@ public class CustomerController {
         simpleMailMessage.setSubject("jart电商平台重置密码邮箱验证码");
         simpleMailMessage.setText(emailCode);
         javaMailSender.send(simpleMailMessage);
+        //存入Map对象 以便验证取出
         pwdResetCode.put(profileById.getEmail(),emailCode);
     }
 
     @PostMapping("resetPsw")
     public void resetPsw(@RequestBody ResetPswInDTO resetPswInDTO) throws ClientException {
 
+        //判断用户是否输入邮箱
         if(resetPswInDTO.getEmail()==null){
             throw new ClientException(ExceptionConstant.CUSTOMER_INPUT_EMAIL_IS_EMPTY_ERRCODE,ExceptionConstant.CUSTOMER_INPUT_EMAIL_IS_EMPTY_ERRMSG);
         }
+        //判断用户是否输入验证码
         String resetCode = resetPswInDTO.getResetCode();
         if(resetCode==null){
             throw new ClientException(ExceptionConstant.CUSTOMER_RESETCODE_IS_EMPTY_ERRCODE,ExceptionConstant.CUSTOMER_RESETCODE_IS_EMPTY_ERRMSG);
         }
+        //判断是否发送验证码  Map对象里面是否有对应值
         String hashResetCode = pwdResetCode.get(resetPswInDTO.getEmail());
         if (hashResetCode==null){
             throw new ClientException(ExceptionConstant.CUSTOMER_NOT_SEND_RESETCODE_ERRCODE,ExceptionConstant.CUSTOMER_NOT_SEND_RESETCODE_ERRMSG);
         }
 
+        //判断验证码是否一致
         if(!resetCode.equals(hashResetCode)){
             throw new ClientException(ExceptionConstant.CUSTOMER_RESETCODE_INVALID_ERRCODE,ExceptionConstant.CUSTOMER_RESETCODE_INVALID_ERRMSG);
         }
 
+        //判断是否存在该邮箱的用户
         Customer customerByEmail = customerService.getCustomerByEmail(resetPswInDTO.getEmail());
         if(customerByEmail==null){
             throw new ClientException(ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRMSG);
         }
 
+        //判断是否输入了新密码
         String newPassword = resetPswInDTO.getNewPassword();
         if (newPassword==null){
             throw new ClientException(ExceptionConstant.CUSTOMER_NEWPWD_IS_EMPTY_ERRCODE,ExceptionConstant.CUSTOMER_NEWPWD_IS_EMPTY_ERRMSG);
         }
 
+        //给新密码加密并修改
         String newEncryptedPassword = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
         customerByEmail.setEncryptedPassword(newEncryptedPassword);
         customerService.updateProfile(customerByEmail);

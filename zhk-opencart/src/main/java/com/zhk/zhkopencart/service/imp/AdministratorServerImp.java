@@ -40,4 +40,15 @@ public class AdministratorServerImp implements AdministratorServer {
         Page<AdministratorListDTO> administratorListDTOS= administratorMapper.getUserList();
         return administratorListDTOS;
     }
+
+    @Override
+    public Integer create(Administrator administrator) {
+        administratorMapper.insertSelective(administrator);
+        return administrator.getAdministratorId();
+    }
+
+    @Override
+    public void update(Administrator administrator) {
+        administratorMapper.updateByPrimaryKeySelective(administrator);
+    }
 }
