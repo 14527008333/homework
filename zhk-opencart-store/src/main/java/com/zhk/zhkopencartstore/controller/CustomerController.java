@@ -8,6 +8,7 @@ import com.zhk.zhkopencartstore.dto.in.CustomerUpdateInDTO;
 import com.zhk.zhkopencartstore.dto.in.ResetPswInDTO;
 import com.zhk.zhkopencartstore.dto.out.CustomerLoginOutDTO;
 import com.zhk.zhkopencartstore.dto.out.CustomerShowOutDTO;
+import com.zhk.zhkopencartstore.enums.CustomerStatusEnum;
 import com.zhk.zhkopencartstore.exception.ClientException;
 import com.zhk.zhkopencartstore.po.Customer;
 import com.zhk.zhkopencartstore.service.CustomerService;
@@ -42,19 +43,9 @@ public class CustomerController {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @Value("spring.mail.username")
+    @Value("${spring.mail.username}")
     private String fromEamil;
 
-
- /*   private String username;
-
-    private String realName;
-
-    private String email;
-
-    private String mobile;
-
-    private Byte newsSubscribed;*/
 
     @PostMapping("register")
     public Integer registerCustomer(@RequestBody CustomerRegisterInDTO customerRegisterInDTO){
@@ -64,12 +55,16 @@ public class CustomerController {
         customer.setEmail(customerRegisterInDTO.getEmail());
         customer.setMobile(customerRegisterInDTO.getMobile());
         Byte newsSubscribed = customerRegisterInDTO.getNewsSubscribed();
+        String bCryptPassword = BCrypt.withDefaults().hashToString(12, customerRegisterInDTO.getPassword().toCharArray());
+        customer.setEncryptedPassword(bCryptPassword);
         if(newsSubscribed==0||newsSubscribed==null){
             customer.setNewsSubscribed(false);
         }else{
             customer.setNewsSubscribed(true);
         }
         customer.setCreateTime(new Date());
+        customer.setStatus((byte)CustomerStatusEnum.启用.ordinal());
+        customer.setRewordPoints(0);
        Integer customerId= customerService.registerCustomer(customer);
         return customerId;
     }
@@ -111,6 +106,7 @@ public class CustomerController {
     public void updateProfile(@RequestBody CustomerUpdateInDTO customerUpdateInDTO, @RequestAttribute Integer customerId){
 
         Customer customer = new Customer();
+        customer.setCustomerId(customerId);
         customer.setUsername(customerUpdateInDTO.getUsername());
         customer.setRealName(customerUpdateInDTO.getRealName());
         customer.setAvatarUrl(customerUpdateInDTO.getAvatarUrl());

@@ -13,6 +13,8 @@ public class CustomerRegisterInDTO {
 
     private String mobile;
 
+    private String password;
+
     private Byte newsSubscribed;
 
 }
