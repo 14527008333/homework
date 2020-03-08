@@ -8,4 +8,8 @@ public interface CustomerService {
     Customer getProfileById(Integer customerId);
 
     void updateProfile(Customer customer);
+
+    Customer getCustomerByEmail(String email);
+
+    Integer registerCustomer(Customer customer);
 }

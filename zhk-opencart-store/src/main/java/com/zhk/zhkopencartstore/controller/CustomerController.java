@@ -5,6 +5,7 @@ import com.zhk.zhkopencartstore.constant.ExceptionConstant;
 import com.zhk.zhkopencartstore.dto.in.CustomerChangerPasswordInDTO;
 import com.zhk.zhkopencartstore.dto.in.CustomerRegisterInDTO;
 import com.zhk.zhkopencartstore.dto.in.CustomerUpdateInDTO;
+import com.zhk.zhkopencartstore.dto.in.ResetPswInDTO;
 import com.zhk.zhkopencartstore.dto.out.CustomerLoginOutDTO;
 import com.zhk.zhkopencartstore.dto.out.CustomerShowOutDTO;
 import com.zhk.zhkopencartstore.exception.ClientException;
@@ -12,12 +13,22 @@ import com.zhk.zhkopencartstore.po.Customer;
 import com.zhk.zhkopencartstore.service.CustomerService;
 import com.zhk.zhkopencartstore.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.bind.DatatypeConverter;
+import java.security.SecureRandom;
+import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("customer")
 @CrossOrigin
 public class CustomerController {
+
+    private HashMap<String,String> pwdResetCode =new HashMap();
 
     @Autowired
     private CustomerService customerService;
@@ -25,10 +36,42 @@ public class CustomerController {
     @Autowired
     private JWTUtil jwtUtil;
 
+    @Autowired
+    private SecureRandom secureRandom;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Value("spring.mail.username")
+    private String fromEamil;
+
+
+ /*   private String username;
+
+    private String realName;
+
+    private String email;
+
+    private String mobile;
+
+    private Byte newsSubscribed;*/
+
     @PostMapping("register")
     public Integer registerCustomer(@RequestBody CustomerRegisterInDTO customerRegisterInDTO){
-
-        return null;
+        Customer customer = new Customer();
+        customer.setUsername(customerRegisterInDTO.getUsername());
+        customer.setRealName(customerRegisterInDTO.getRealName());
+        customer.setEmail(customerRegisterInDTO.getEmail());
+        customer.setMobile(customerRegisterInDTO.getMobile());
+        Byte newsSubscribed = customerRegisterInDTO.getNewsSubscribed();
+        if(newsSubscribed==0||newsSubscribed==null){
+            customer.setNewsSubscribed(false);
+        }else{
+            customer.setNewsSubscribed(true);
+        }
+        customer.setCreateTime(new Date());
+       Integer customerId= customerService.registerCustomer(customer);
+        return customerId;
     }
 
     @GetMapping("login")
@@ -64,7 +107,7 @@ public class CustomerController {
         return customerShowOutDTO;
     }
 
-    @GetMapping("updateProfile")
+    @PostMapping("updateProfile")
     public void updateProfile(@RequestBody CustomerUpdateInDTO customerUpdateInDTO, @RequestAttribute Integer customerId){
 
         Customer customer = new Customer();
@@ -82,15 +125,15 @@ public class CustomerController {
         customerService.updateProfile(customer);
     }
 
-    @GetMapping("customerChangePassword")
+    @PostMapping("customerChangePassword")
     public void customerChangePassword(@RequestBody CustomerChangerPasswordInDTO customerChangerPasswordInDTO,
                                        @RequestAttribute Integer customerId) throws ClientException {
-        //根据customerId获取用户对象，得到密码，判断原始密码是否正确
+        //根据customerId获取用户对象，得到密码
         Customer customerById = customerService.getProfileById(customerId);
         BCrypt.Result verify = BCrypt.verifyer().verify(customerChangerPasswordInDTO.getOriginalPassword().toCharArray(), customerById.getEncryptedPassword());
 
+        //判断原始密码是否正确
         if(verify.verified){
-
             String newPassword = BCrypt.withDefaults().hashToString(12, customerChangerPasswordInDTO.getNewPassword().toCharArray());
             customerById.setEncryptedPassword(newPassword);
             customerService.updateProfile(customerById);
@@ -98,6 +141,63 @@ public class CustomerController {
             throw new ClientException(ExceptionConstant.CUSTOMER_PASSWORD_INVALID_ERRCODE,ExceptionConstant.CUSTOMER_PASSWORD_INVALID_ERRMSG);
         }
 
+    }
 
+    @PostMapping("getPwdResetCode")
+    public void getPwdResetCode(@RequestParam(required = false) String email) throws ClientException {
+
+        if(email==null){
+            throw new ClientException(ExceptionConstant.CUSTOMER_INPUT_EMAIL_IS_EMPTY_ERRCODE,ExceptionConstant.CUSTOMER_INPUT_EMAIL_IS_EMPTY_ERRMSG);
+        }
+
+        Customer profileById = customerService.getCustomerByEmail(email);
+
+        if(profileById==null){
+            throw new ClientException(ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRMSG);
+        }
+
+        byte[] bytes = secureRandom.generateSeed(6);
+        String emailCode = DatatypeConverter.printHexBinary(bytes);
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(fromEamil);
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setSubject("jart电商平台重置密码邮箱验证码");
+        simpleMailMessage.setText(emailCode);
+        javaMailSender.send(simpleMailMessage);
+        pwdResetCode.put(profileById.getEmail(),emailCode);
+    }
+
+    @PostMapping("resetPsw")
+    public void resetPsw(@RequestBody ResetPswInDTO resetPswInDTO) throws ClientException {
+
+        if(resetPswInDTO.getEmail()==null){
+            throw new ClientException(ExceptionConstant.CUSTOMER_INPUT_EMAIL_IS_EMPTY_ERRCODE,ExceptionConstant.CUSTOMER_INPUT_EMAIL_IS_EMPTY_ERRMSG);
+        }
+        String resetCode = resetPswInDTO.getResetCode();
+        if(resetCode==null){
+            throw new ClientException(ExceptionConstant.CUSTOMER_RESETCODE_IS_EMPTY_ERRCODE,ExceptionConstant.CUSTOMER_RESETCODE_IS_EMPTY_ERRMSG);
+        }
+        String hashResetCode = pwdResetCode.get(resetPswInDTO.getEmail());
+        if (hashResetCode==null){
+            throw new ClientException(ExceptionConstant.CUSTOMER_NOT_SEND_RESETCODE_ERRCODE,ExceptionConstant.CUSTOMER_NOT_SEND_RESETCODE_ERRMSG);
+        }
+
+        if(!resetCode.equals(hashResetCode)){
+            throw new ClientException(ExceptionConstant.CUSTOMER_RESETCODE_INVALID_ERRCODE,ExceptionConstant.CUSTOMER_RESETCODE_INVALID_ERRMSG);
+        }
+
+        Customer customerByEmail = customerService.getCustomerByEmail(resetPswInDTO.getEmail());
+        if(customerByEmail==null){
+            throw new ClientException(ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.CUSTOMER_USERNAME_NOT_EXIST_ERRMSG);
+        }
+
+        String newPassword = resetPswInDTO.getNewPassword();
+        if (newPassword==null){
+            throw new ClientException(ExceptionConstant.CUSTOMER_NEWPWD_IS_EMPTY_ERRCODE,ExceptionConstant.CUSTOMER_NEWPWD_IS_EMPTY_ERRMSG);
+        }
+
+        String newEncryptedPassword = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
+        customerByEmail.setEncryptedPassword(newEncryptedPassword);
+        customerService.updateProfile(customerByEmail);
     }
 }

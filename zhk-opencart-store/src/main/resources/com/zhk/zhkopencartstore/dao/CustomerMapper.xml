@@ -203,4 +203,11 @@
     from jcart_customer
     where username = #{userName,jdbcType=VARCHAR}
   </select>
+
+  <select id="getCustomerByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from jcart_customer
+    where email = #{email,jdbcType=VARCHAR}
+  </select>
 </mapper>

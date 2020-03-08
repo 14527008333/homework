@@ -28,4 +28,18 @@ public class CustomerServiceImp implements CustomerService {
     public void updateProfile(Customer customer) {
         customerMapper.updateByPrimaryKeySelective(customer);
     }
+
+    @Override
+    public Customer getCustomerByEmail(String email) {
+
+        Customer customer= customerMapper.getCustomerByEmail(email);
+
+        return customer;
+    }
+
+    @Override
+    public Integer registerCustomer(Customer customer) {
+        customerMapper.insertSelective(customer);
+        return customer.getCustomerId();
+    }
 }
