@@ -26,4 +26,6 @@ public interface AdministratorMapper {
     AdministratorShowDTO getAdministratorById(@Param("administratorId")Integer administratorId);
 
     Page<AdministratorListDTO> getUserList();
+
+    Administrator getAdministratorByEmail(String email);
 }

@@ -51,4 +51,10 @@ public class AdministratorServerImp implements AdministratorServer {
     public void update(Administrator administrator) {
         administratorMapper.updateByPrimaryKeySelective(administrator);
     }
+
+    @Override
+    public Administrator getAdministratorByEmail(String email) {
+        Administrator administrator= administratorMapper.getAdministratorByEmail(email);
+        return administrator;
+    }
 }

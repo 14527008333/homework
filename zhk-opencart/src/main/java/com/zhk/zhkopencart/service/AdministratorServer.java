@@ -20,4 +20,6 @@ public interface AdministratorServer {
     Integer create(Administrator administrator);
 
     void update(Administrator administrator);
+
+    Administrator getAdministratorByEmail(String email);
 }

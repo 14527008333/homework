@@ -205,5 +205,7 @@ public class CustomerController {
         String newEncryptedPassword = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
         customerByEmail.setEncryptedPassword(newEncryptedPassword);
         customerService.updateProfile(customerByEmail);
+
+        pwdResetCode.remove(resetPswInDTO.getEmail());
     }
 }

@@ -6,6 +6,7 @@ import com.zhk.zhkopencart.constant.ExceptionConstant;
 import com.zhk.zhkopencart.dto.in.AdministratorChangePasswordInDTO;
 import com.zhk.zhkopencart.dto.in.AdministratorCreateDTO;
 import com.zhk.zhkopencart.dto.in.AdministratorUpdateDTO;
+import com.zhk.zhkopencart.dto.in.ResetPswInDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorListDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorLoginOutDTO;
 import com.zhk.zhkopencart.dto.out.AdministratorShowDTO;
@@ -16,9 +17,15 @@ import com.zhk.zhkopencart.po.Administrator;
 import com.zhk.zhkopencart.service.AdministratorServer;
 import com.zhk.zhkopencart.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.SecureRandom;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -26,12 +33,22 @@ import java.util.List;
 @CrossOrigin
 public class AdministratorController {
 
+    private HashMap<String,String> pwdResetCode =new HashMap();
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Value("${spring.mail.username}")
+    private String fromEamil;
 
     @Autowired
     private AdministratorServer administratorServer;
 
     @Autowired
     private JWTUtil jwtUtil;
+
+    @Autowired
+    private SecureRandom secureRandom;
 
     @GetMapping("list")
     public PageDTO<AdministratorListDTO> getUserList(@RequestParam(required = false,defaultValue = "1")Integer pageNum){
@@ -136,6 +153,74 @@ public class AdministratorController {
             throw new ClientException(ExceptionConstant.ADNINISTRATOR_PASSWORD_INVALID_ERRCODE,ExceptionConstant.ADNINISTRATOR_PASSWORD_INVALID_ERRMSG);
         }
 
+    }
+
+    @PostMapping("getPwdResetCode")
+    public void getPwdResetCode(@RequestParam(required = false) String email) throws ClientException {
+
+        //判断邮箱是否为空
+        if(email==null){
+            throw new ClientException(ExceptionConstant.ADMINISTRATOR_INPUT_EMAIL_IS_EMPTY_ERRCODE,ExceptionConstant.ADMINISTRATOR_INPUT_EMAIL_IS_EMPTY_ERRMSG);
+        }
+
+        //判断是否存在该邮箱的用户
+        Administrator administrator = administratorServer.getAdministratorByEmail(email);
+        if(administrator==null){
+            throw new ClientException(ExceptionConstant.ADMINISTRATOR_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.ADMINISTRATOR_USERNAME_NOT_EXIST_ERRMSG);
+        }
+
+        //获取随机值 并为用户发送邮箱验证码
+        byte[] bytes = secureRandom.generateSeed(3);
+        String emailCode = DatatypeConverter.printHexBinary(bytes);
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(fromEamil);
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setSubject("jart电商平台重置密码邮箱验证码");
+        simpleMailMessage.setText(emailCode);
+        javaMailSender.send(simpleMailMessage);
+        //存入Map对象 以便验证取出
+        pwdResetCode.put(email,emailCode);
+    }
+
+    @PostMapping("resetPsw")
+    public void resetPsw(@RequestBody ResetPswInDTO resetPswInDTO) throws ClientException {
+
+        //判断用户是否输入邮箱
+        if(resetPswInDTO.getEmail()==null){
+            throw new ClientException(ExceptionConstant.ADMINISTRATOR_INPUT_EMAIL_IS_EMPTY_ERRCODE,ExceptionConstant.ADMINISTRATOR_INPUT_EMAIL_IS_EMPTY_ERRMSG);
+        }
+        //判断用户是否输入验证码
+        String resetCode = resetPswInDTO.getResetCode();
+        if(resetCode==null){
+            throw new ClientException(ExceptionConstant.ADMINISTRATOR_RESETCODE_IS_EMPTY_ERRCODE,ExceptionConstant.ADMINISTRATOR_RESETCODE_IS_EMPTY_ERRMSG);
+        }
+        //判断是否发送验证码  Map对象里面是否有对应值
+        String hashResetCode = pwdResetCode.get(resetPswInDTO.getEmail());
+        if (hashResetCode==null){
+            throw new ClientException(ExceptionConstant.ADMINISTRATOR_NOT_SEND_RESETCODE_ERRCODE,ExceptionConstant.ADMINISTRATOR_NOT_SEND_RESETCODE_ERRMSG);
+        }
+
+        //判断验证码是否一致
+        if(!resetCode.equals(hashResetCode)){
+            throw new ClientException(ExceptionConstant.ADMINISTRATOR_RESETCODE_INVALID_ERRCODE,ExceptionConstant.ADMINISTRATOR_RESETCODE_INVALID_ERRMSG);
+        }
+
+        //判断是否存在该邮箱的用户
+        Administrator administrator = administratorServer.getAdministratorByEmail(resetPswInDTO.getEmail());
+        if(administrator==null){
+            throw new ClientException(ExceptionConstant.ADMINISTRATOR_USERNAME_NOT_EXIST_ERRCODE,ExceptionConstant.ADMINISTRATOR_USERNAME_NOT_EXIST_ERRMSG);
+        }
+
+        //判断是否输入了新密码
+        String newPassword = resetPswInDTO.getNewPassword();
+        if (newPassword==null){
+            throw new ClientException(ExceptionConstant.ADMINISTRATOR_NEWPWD_IS_EMPTY_ERRCODE,ExceptionConstant.ADMINISTRATOR_NEWPWD_IS_EMPTY_ERRMSG);
+        }
+
+        //给新密码加密并修改
+        String newEncryptedPassword = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
+        administrator.setEncryptedPassword(newEncryptedPassword);
+        administratorServer.update(administrator);
     }
 
 
