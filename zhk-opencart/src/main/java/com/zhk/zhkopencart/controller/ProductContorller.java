@@ -23,7 +23,7 @@ public class ProductContorller {
 
 
     @GetMapping("list")
-    public PageDTO<ProductLsitDTO> getUserList(@RequestParam(required = false) String productName,
+    public PageDTO<ProductLsitDTO> getUserList(@RequestParam(required = false)  String productName,
                                                @RequestParam(required = false) Double price,
                                                @RequestParam(required = false)Integer quantity,
                                                @RequestParam(required = false)Integer status,

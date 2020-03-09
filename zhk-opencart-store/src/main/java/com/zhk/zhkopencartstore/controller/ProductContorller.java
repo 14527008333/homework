@@ -18,9 +18,12 @@ public class ProductContorller {
 
 
     @GetMapping("list")
-    public PageOutDTO<ProductLsitDTO> getUserList(@RequestParam(required = false,defaultValue = "1")Integer pageNum){
+    public PageOutDTO<ProductLsitDTO> getUserList(@RequestParam(required = false) String productName,
+                                                  @RequestParam(required = false) Double price,
+                                                  @RequestParam(required = false)Integer quantity,
+                                                  @RequestParam(required = false,defaultValue = "1")Integer pageNum){
 
-         Page<ProductLsitDTO> pageLsit =productService.getqueryList(pageNum);
+         Page<ProductLsitDTO> pageLsit =productService.getqueryList(productName,price,quantity,pageNum);
         PageOutDTO<ProductLsitDTO> productLsitDTOPageDTO = new PageOutDTO<>();
 
         productLsitDTOPageDTO.setPageNum(pageLsit.getPageNum());

@@ -164,8 +164,19 @@
 
   <select id="getqueryList"  resultType="com.zhk.zhkopencartstore.dto.out.ProductLsitDTO">
     select product_id productId,product_name productName,
-    price,stock_quantity quantity,`status`,main_pic_url mainImageUrl
+           price,stock_quantity quantity,`status`,main_pic_url mainImageUrl
     from jcart_product
+    <where>
+      <if test="productName != null">
+        and product_name like CONCAT("%",#{productName,jdbcType=VARCHAR},"%")
+      </if>
+      <if test="price != null">
+        and price = #{price,jdbcType=DOUBLE}
+      </if>
+      <if test="quantity != null">
+        and stock_quantity = #{quantity,jdbcType=INTEGER}
+      </if>
+    </where>
   </select>
 
   <select id="getProductAndProductDetailById"  resultType="com.zhk.zhkopencartstore.dto.out.ProductShowDTO">

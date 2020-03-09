@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductService {
-    Page<ProductLsitDTO> getqueryList(Integer pageNum);
+    Page<ProductLsitDTO> getqueryList(String productName,Double price,Integer quantity,Integer pageNum);
 
     ProductShowDTO getProductAndProductDetailById(Integer productId);
 }
