@@ -114,4 +114,28 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where order_id = #{orderId,jdbcType=BIGINT}
   </update>
+  <select id="getOrderList"  resultType="com.zhk.zhkopencart.dto.out.OrderListDTO">
+    select ord.order_id orderId,ord.customer_id customerId,
+		   ord.`status`,ord.total_price totalPrice,
+		   ord.reword_points rewordPoints,ord.create_time createTime,
+           ord.update_time updateTime,cus.username customerName
+           from jcart_order ord left join jcart_customer cus on ord.customer_id=cus.customer_id
+        <where>
+          <if test="customerName != null and customerName!=''">
+            and cus.username like CONCAT("%",#{customerName,jdbcType=VARCHAR},"%")
+          </if>
+          <if test="status != null">
+            and ord.status = #{status,jdbcType=INTEGER}
+          </if>
+          <if test="totalPrice != null">
+            and ord.total_price = #{totalPrice,jdbcType=DOUBLE}
+          </if>
+          <if test="createTime != null">
+            and ord.create_time = #{createTime}
+          </if>
+          <if test="updateTime != null">
+            and ord.update_time = #{updateTime}
+          </if>
+        </where>
+  </select>
 </mapper>

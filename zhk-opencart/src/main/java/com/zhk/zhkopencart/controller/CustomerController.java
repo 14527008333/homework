@@ -56,29 +56,6 @@ public class CustomerController {
         return customerListDTOPageDTO;
     }
 
-   /* private Integer customerId;
-
-    private String userName;
-
-    private String realName;
-
-    private String email;
-
-    private String mobil;
-
-    private String avatarUrl;
-
-    private Integer status;
-
-    private String password;
-
-    private Integer newsSubscribed;
-
-    private Integer rewordPoints;
-
-    private Long createTime;
-
-    private Integer defaultAddressId;*/
     @GetMapping("show")
     public CustomerShowDTO show(@RequestParam(required = false) Integer customerId){
         Customer customer= customerService.getCustomerById(customerId);
