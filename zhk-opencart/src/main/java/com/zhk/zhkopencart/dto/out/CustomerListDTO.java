@@ -12,12 +12,10 @@ public class CustomerListDTO {
 
     private String realName;
 
-    private String avatarUrl;
-
     private String email;
 
     private Integer status;
 
-    private Date createTime;
+    private Long createTime;
 
 }

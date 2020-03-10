@@ -21,12 +21,14 @@ public class CustomerShowDTO {
 
     private Integer status;
 
-    private String password;
-
     private Integer newsSubscribed;
 
     private Integer rewordPoints;
 
-    private Date createTime;
+    private Long createTime;
+
+    private Integer defaultAddressId;
+
+    private String defaultAddress;
 
 }
