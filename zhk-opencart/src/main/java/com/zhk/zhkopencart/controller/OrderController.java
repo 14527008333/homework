@@ -37,7 +37,8 @@ public class OrderController {
 
     @GetMapping("show")
     public OrderShowDTO show(@RequestParam Integer orderId){
-        return null;
+        OrderShowDTO orderShowDTO= orderService.getOrderById(orderId);
+        return orderShowDTO;
     }
 
     @GetMapping("invoiceList")

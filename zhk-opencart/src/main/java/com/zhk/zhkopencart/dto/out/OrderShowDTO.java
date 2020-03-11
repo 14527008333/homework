@@ -1,25 +1,40 @@
 package com.zhk.zhkopencart.dto.out;
 
 import com.zhk.zhkopencart.po.OrderHistory;
+import com.zhk.zhkopencart.vo.OrderProductVO;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class OrderShowDTO {
 
-    private Integer orderId;
+    private Long orderId;
 
-    private String customerName;
-
-    private Integer status;
+    private Byte status;
 
     private Double totalPrice;
 
     private Integer rewordPoints;
 
-    private Date createTime;
+    private Long createTimestamp;
 
-    private Date updateTime;
+    private Long updateTimestamp;
 
-    private List<OrderHistory> orderHistoryList;
+    private Short shipMethod;
+
+    private String shipAddress;
+
+    private Double shipPrice;
+
+    private Short payMethod;
+
+    private String invoiceAddress;
+
+    private Double invoicePrice;
+
+    private String comment;
+
+    private List<OrderProductVO> orderProducts;
 }
