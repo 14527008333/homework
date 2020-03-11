@@ -21,8 +21,7 @@ public class CustomerServiceImp implements CustomerService {
     public Page<Customer> getCustomerList(String userName, String email, Integer status, Long createTime, Integer pageNum) {
 
         PageHelper.startPage(pageNum,3);
-        Date date=null;
-        Page<Customer> customerPage= customerMapper.getCustomerList(userName,email,status,date==null ? null:new Date(createTime));
+        Page<Customer> customerPage= customerMapper.getCustomerList(userName,email,status,createTime==null ? null:new Date(createTime));
         return customerPage;
     }
 

@@ -6,6 +6,8 @@ import com.zhk.zhkopencart.po.Order;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public interface OrderMapper {
     int deleteByPrimaryKey(Long orderId);
@@ -21,6 +23,6 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
 
     Page<OrderListDTO> getOrderList(@Param("customerName") String customerName, @Param("status")Integer status,
-                                    @Param("totalPrice")Double totalPrice, @Param("createTime")Long createTime,
-                                    @Param("updateTime")Long updateTime);
+                                    @Param("totalPrice")Double totalPrice, @Param("createTime") Date createTime,
+                                    @Param("updateTime")Date updateTime);
 }

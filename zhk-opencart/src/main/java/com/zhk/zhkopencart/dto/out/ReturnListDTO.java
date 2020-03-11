@@ -11,15 +11,17 @@ public class ReturnListDTO {
 
     private Integer orderId;
 
+    private Integer customerId;
+
     private String customerName;
 
     private String productName;
 
     private Integer status;
 
-    private Date createTime;
+    private Long createTime;
 
-    private Date updateTime;
+    private Long updateTime;
 
 
 }

@@ -14,6 +14,7 @@ import com.zhk.zhkopencart.vo.OrderProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,25 +32,11 @@ public class OrderServiceImp implements OrderService {
                                            Long updateTime, Integer pageNum) {
 
         PageHelper.startPage(pageNum,3);
-        Page<OrderListDTO> orderListDTOS= orderMapper.getOrderList(customerName,status,totalPrice,createTime,updateTime);
+        Page<OrderListDTO> orderListDTOS= orderMapper.getOrderList(customerName,status,totalPrice,createTime==null?null:new Date(createTime),updateTime==null?null:new Date(updateTime));
 
         return orderListDTOS;
     }
 
-   /* private Long orderId;
-    private Byte status;
-    private Double totalPrice;
-    private Integer rewordPoints;
-    private Long createTimestamp;
-    private Long updateTimestamp;
-    private Short shipMethod;
-    private String shipAddress;
-    private Double shipPrice;
-    private Short payMethod;
-    private String invoiceAddress;
-    private Double invoicePrice;
-    private String comment;
-    private List<OrderProductVO> orderProducts;*/
     @Override
     public OrderShowDTO getOrderById(Integer orderId) {
         Order order = orderMapper.selectByPrimaryKey((long) orderId);
