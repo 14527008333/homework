@@ -101,4 +101,11 @@
       customer_notified = #{customerNotified,jdbcType=BIT}
     where return_history_id = #{returnHistoryId,jdbcType=BIGINT}
   </update>
+
+  <select id="getReturnListByReturnId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from jcart_return_history
+    where return_id = #{returnId,jdbcType=INTEGER}
+  </select>
 </mapper>
