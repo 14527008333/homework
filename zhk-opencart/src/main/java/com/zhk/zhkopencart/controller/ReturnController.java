@@ -54,14 +54,44 @@ public class ReturnController {
         return returnListDTOPageDTO;
     }
 
+   /* private Integer returnId;
+    private Integer orderId;
+    private String customerName;
+    private String productName;
+    private String email;
+    private String mobile;
+    private Integer returnAction;
+    private Integer quantity;
+    private Integer reason;
+    private Integer opened;
+    private Integer status;
+    private String comment;
+    private Date createTime;
+    private Date updateTime;*/
     @GetMapping("show")
     public ReturnShowDTO show(@RequestParam Integer returnId){
+        Return aReturn= returnService.getReturnById(returnId);
 
-        return null;
+        ReturnShowDTO returnShowDTO = new ReturnShowDTO();
+        returnShowDTO.setReturnId(aReturn.getReturnId());
+        returnShowDTO.setOrderId(aReturn.getOrderId().intValue());
+        returnShowDTO.setCustomerName(aReturn.getCustomerName());
+        returnShowDTO.setProductName(aReturn.getProductName());
+        returnShowDTO.setEmail(aReturn.getEmail());
+        returnShowDTO.setMobile(aReturn.getMobile());
+        returnShowDTO.setReturnAction(aReturn.getAction().intValue());
+        returnShowDTO.setQuantity(aReturn.getQuantity());
+        returnShowDTO.setReason(aReturn.getReason().intValue());
+        returnShowDTO.setOpened(aReturn.getOpened());
+        returnShowDTO.setStatus(aReturn.getStatus().intValue());
+        returnShowDTO.setComment(aReturn.getComment());
+        returnShowDTO.setCreateTime(aReturn.getCreateTime().getTime());
+        returnShowDTO.setUpdateTime(aReturn.getUpdateTime().getTime());
+        return returnShowDTO;
     }
 
 
-    @PostMapping("update")
+    @PostMapping("updateAction")
     public void update(@RequestPart(required = false) ReturnCreateDTO returnCreateDTO){
 
     }

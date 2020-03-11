@@ -27,4 +27,10 @@ public class ReturnServiceImp implements ReturnService {
 
         return returns;
     }
+
+    @Override
+    public Return getReturnById(Integer returnId) {
+        Return aReturn = returnMapper.selectByPrimaryKey(returnId);
+        return aReturn;
+    }
 }

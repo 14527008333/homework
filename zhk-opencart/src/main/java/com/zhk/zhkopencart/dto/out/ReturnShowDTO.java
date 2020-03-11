@@ -9,32 +9,18 @@ import java.util.List;
 @Data
 public class ReturnShowDTO {
     private Integer returnId;
-
     private Integer orderId;
-
     private String customerName;
-
     private String productName;
-
-    private Date orderTime;
-
     private String email;
-
     private String mobile;
-
     private Integer returnAction;
-
     private Integer quantity;
-
     private Integer reason;
-
-    private Integer opened;
-
+    private Boolean opened;
     private Integer status;
+    private String comment;
+    private Long createTime;
+    private Long updateTime;
 
-    private Date createTime;
-
-    private Date updateTime;
-
-    private List<ReturnHistory> returnHistoryList;
 }
