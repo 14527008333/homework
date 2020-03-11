@@ -10,6 +10,7 @@ import com.zhk.zhkopencart.service.ReturnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,20 +55,7 @@ public class ReturnController {
         return returnListDTOPageDTO;
     }
 
-   /* private Integer returnId;
-    private Integer orderId;
-    private String customerName;
-    private String productName;
-    private String email;
-    private String mobile;
-    private Integer returnAction;
-    private Integer quantity;
-    private Integer reason;
-    private Integer opened;
-    private Integer status;
-    private String comment;
-    private Date createTime;
-    private Date updateTime;*/
+
     @GetMapping("show")
     public ReturnShowDTO show(@RequestParam Integer returnId){
         Return aReturn= returnService.getReturnById(returnId);
@@ -92,7 +80,12 @@ public class ReturnController {
 
 
     @PostMapping("updateAction")
-    public void update(@RequestPart(required = false) ReturnCreateDTO returnCreateDTO){
+    public void updateAction(@RequestPart(required = false) ReturnCreateDTO returnCreateDTO){
 
+        Return aReturn = new Return();
+        aReturn.setReturnId(returnCreateDTO.getReturnId());
+        aReturn.setAction(returnCreateDTO.getAction());
+        aReturn.setUpdateTime(new Date());
+        returnService.update(aReturn);
     }
 }
