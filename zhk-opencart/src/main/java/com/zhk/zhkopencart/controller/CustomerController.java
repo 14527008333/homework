@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("customer")
+@CrossOrigin
 public class CustomerController {
 
     @Autowired
