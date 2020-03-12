@@ -21,7 +21,7 @@ public class CustomerShowDTO {
 
     private Integer status;
 
-    private Integer newsSubscribed;
+    private Boolean newsSubscribed;
 
     private Integer rewordPoints;
 

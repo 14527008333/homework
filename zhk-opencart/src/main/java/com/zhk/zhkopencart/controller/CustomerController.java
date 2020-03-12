@@ -68,15 +68,16 @@ public class CustomerController {
         customerShowDTO.setMobil(customer.getMobile());
         customerShowDTO.setAvatarUrl(customer.getAvatarUrl());
         customerShowDTO.setStatus(customer.getStatus().intValue());
-        customerShowDTO.setNewsSubscribed(customer.getNewsSubscribed().hashCode());
+        customerShowDTO.setNewsSubscribed(customer.getNewsSubscribed());
         customerShowDTO.setRewordPoints(customer.getRewordPoints());
         customerShowDTO.setCreateTime(customer.getCreateTime().getTime());
         customerShowDTO.setDefaultAddressId(customer.getDefaultAddressId());
 
         //根据addressId获取到默认地址的详细信息
-        AddressShowDTO addressById = addressService.getAddressById(customer.getDefaultAddressId());
-
-        customerShowDTO.setDefaultAddress(addressById.getContent());
+        if(customer.getDefaultAddressId()!=null){
+            AddressShowDTO addressById = addressService.getAddressById(customer.getDefaultAddressId());
+            customerShowDTO.setDefaultAddress(addressById.getContent());
+        }
         return customerShowDTO;
     }
 

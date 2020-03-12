@@ -50,7 +50,7 @@ var app = new Vue({
         },
         customerShow(customerId){
             console.log("show "+customerId);
-            location.href = 'http://127.0.0.1:8080/productShow.html?customerId=' + customerId;
+            location.href = 'http://127.0.0.1:8080/customerShow.html?customerId=' + customerId;
         }
         
     }
