@@ -81,7 +81,7 @@ public class CustomerController {
         return customerShowDTO;
     }
 
-    @GetMapping("updateStatus")
+    @PostMapping("updateStatus")
     public void updateStatus(@RequestBody CustomerUpdateStatusInDTO customerUpdateStatusInDTO){
         customerService.CustomerUpdateStatusInDTO(customerUpdateStatusInDTO);
 

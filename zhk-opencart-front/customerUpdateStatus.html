@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/elementui.css">
-    <title>productUpdate</title>
+    <title>customerUpdateStatus</title>
 </head>
 
 <body>
@@ -16,13 +16,19 @@
         客户头像：{{avatarUrl}} <br>
         手机：{{mobile}} <br>
         邮箱：{{email}} <br>
-        状态：{{statuses[status].label}} <br>
         注册时间：{{(new Date(createTime)).toLocaleString()}} <br>
         订阅新闻：<span v-if="newsSubscribed">是</span><span v-else>否</span> <br>
         积分：{{rewordPoints}} <br>
         默认地址：{{defaultAddress}} <br>
-        <br>
-        
+        <el-select v-model="status" placeholder="请选择">
+            <el-option
+              v-for="item in statuses"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select><br>
+          <el-button type="primary" @click="updateStatusSubmit">修改状态</el-button>
     </div>
     
     <script src="assets\vendor\tinymce\tinymce.min.js"></script>
@@ -30,7 +36,7 @@
     <script src="assets/js/common.js"></script>
     <script src="assets/js/vue.js"></script>
     <script src="assets/js/elementui.js"></script>
-    <script src="viewmodels/customerShow.js"></script>
+    <script src="viewmodels/customerUpdateStatus.js"></script>
 
 </body>
 
