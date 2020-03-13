@@ -10,6 +10,8 @@ import com.zhk.zhkopencartstore.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AddressServiceImp implements AddressService {
 
@@ -17,9 +19,8 @@ public class AddressServiceImp implements AddressService {
     private AddressMapper addressMapper;
 
     @Override
-    public Page<Address> getAddressList(Integer pageNum, Integer customerId) {
-        PageHelper.startPage(pageNum,3);
-        Page<Address> addresses= addressMapper.getAddressList(customerId);
+    public List<Address> getAddressList(Integer customerId) {
+        List<Address> addresses= addressMapper.getAddressList(customerId);
         return addresses;
     }
 

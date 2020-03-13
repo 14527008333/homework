@@ -5,8 +5,10 @@ import com.zhk.zhkopencartstore.dto.in.AddressUpdateInDTO;
 import com.zhk.zhkopencartstore.dto.out.AddressShowOutDTO;
 import com.zhk.zhkopencartstore.po.Address;
 
+import java.util.List;
+
 public interface AddressService {
-    Page<Address> getAddressList(Integer pageNum, Integer customerId);
+    List<Address> getAddressList(Integer customerId);
 
     Integer insertSelective(Address address);
 

@@ -50,6 +50,9 @@
     </selectKey>
     insert into jcart_order_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
       <if test="shipMethod != null">
         ship_method,
       </if>
@@ -76,6 +79,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
       <if test="shipMethod != null">
         #{shipMethod,jdbcType=SMALLINT},
       </if>

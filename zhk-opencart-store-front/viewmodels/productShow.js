@@ -61,7 +61,7 @@ var app = new Vue({
                   "productId": this.productId,
                   "productCode": this.productCode,
                   "productName": this.productName,
-                  "mainPicUrl": this.mainPicUrl,
+                  "mainPicUrl": this.imageUrl,
                   "unitPrice": this.price,
                   "num": this.buyQuantity
               };

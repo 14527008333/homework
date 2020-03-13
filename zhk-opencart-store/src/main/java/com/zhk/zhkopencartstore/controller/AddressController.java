@@ -23,9 +23,8 @@ public class AddressController {
     private AddressService addressService;
 
     @GetMapping("list")
-    public PageOutDTO<AddressLsitOutDTO> getAddressList(@RequestParam(required = false ,defaultValue = "1") Integer pageNum,
-                                                        @RequestAttribute Integer customerId){
-       Page<Address> addresses= addressService.getAddressList(pageNum,customerId);
+    public List<AddressLsitOutDTO> getAddressList(@RequestAttribute Integer customerId){
+        List<Address> addresses= addressService.getAddressList(customerId);
         List<AddressLsitOutDTO> addressLsitOutDTOS=addresses.stream().map(address -> {
             AddressLsitOutDTO addressLsitOutDTO = new AddressLsitOutDTO();
 
@@ -37,13 +36,9 @@ public class AddressController {
 
             return addressLsitOutDTO;
         }).collect(Collectors.toList());
-        PageOutDTO<AddressLsitOutDTO> addressLsitOutDTOPageOutDTO = new PageOutDTO<>();
-        addressLsitOutDTOPageOutDTO.setTotal(addresses.getTotal());
-        addressLsitOutDTOPageOutDTO.setPageNum(addresses.getPageNum());
-        addressLsitOutDTOPageOutDTO.setPageSize(addresses.getPageSize());
-        addressLsitOutDTOPageOutDTO.setList(addressLsitOutDTOS);
 
-        return addressLsitOutDTOPageOutDTO;
+
+        return addressLsitOutDTOS;
     }
 
     @PostMapping("addressCreate")

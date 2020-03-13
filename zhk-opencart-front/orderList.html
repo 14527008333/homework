@@ -48,12 +48,18 @@
                 label="所得积分">
               </el-table-column>
               <el-table-column
-                prop="createTime"
+                prop=""
                 label="创建时间">
+                <template slot-scope="scope">
+                  {{(new Date(scope.row.createTimetamp)).toLocaleString()}}
+                </template>
               </el-table-column>
               <el-table-column
-                prop="updateTime"
+                prop=""
                 label="修改时间">
+                <template slot-scope="scope">
+                  {{(new Date(scope.row.updateTimetamp)).toLocaleString()}}
+                </template>
               </el-table-column>
               <el-table-column
                 fixed="right"
