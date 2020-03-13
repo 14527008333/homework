@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/elementui.css">
+    <title>productList</title>
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <el-table
+              :data="pageList.list"
+              stripe
+              style="width: 100%">
+              <el-table-column
+                label="订单状态">
+                <template slot-scope="scope">
+                  {{orderStatus[scope.row.status].label}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="totalPrice"
+                label="总价">
+              </el-table-column>
+              <el-table-column
+                prop="rewordPoints"
+                label="积分">
+              </el-table-column>
+              <el-table-column
+                prop="createTime"
+                label="创建时间">
+                <template slot-scope="scope">
+                  {{(new Date(scope.row.createTime)).toLocaleString()}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作">
+                <template slot-scope="scope">
+                  <el-button  icon="el-icon-view" @click="orderShow(scope.row.orderId)" circle></el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+          <el-pagination layout="prev, pager, next" :total="pageList.total" :page-size="pageList.pageSize"
+            @current-change="pageClick">
+        </el-pagination>
+    </div>
+
+    <script src="assets/js/axios.min.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/elementui.js"></script>
+    <script src="viewmodels/orderList.js"></script>
+
+</body>
+
+</html>

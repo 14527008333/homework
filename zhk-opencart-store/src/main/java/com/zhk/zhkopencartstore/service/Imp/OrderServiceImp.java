@@ -53,7 +53,7 @@ public class OrderServiceImp implements OrderService {
             orderProductVO.setProductId(productById.getProductId());
             orderProductVO.setProductCode(productById.getProductCode());
             orderProductVO.setProductName(productById.getProductName());
-            orderProductVO.setQuantity(productById.getQuantity());
+            orderProductVO.setQuantity(orderProduct.getQuantity());
             orderProductVO.setUnitPrice(productById.getPrice());
             orderProductVO.setTotalPrice(productById.getPrice()*orderProduct.getQuantity());
             orderProductVO.setUnitRewordPoints(productById.getRewordPoints());

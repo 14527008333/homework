@@ -54,7 +54,7 @@ public class OrderController {
         return orderListOutDTOPageOutDTO;
     }
 
-    @PostMapping("show")
+    @GetMapping("show")
     public OrderShowOutDTO OrderShowById(@RequestParam Integer orderId){
 
         OrderShowOutDTO orderShowOutDTO= orderService.OrderShowById(orderId);
