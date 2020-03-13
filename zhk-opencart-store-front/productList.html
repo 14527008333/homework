@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/elementui.css">
+    <title>productList</title>
+</head>
+
+<body>
+    <div id="app">
+      <el-input placeholder="请输入商品名称" v-model="productName"></el-input>
+      <el-input placeholder="请输入价格" v-model="price" ></el-input>
+      <el-button type="primary" @click="queryProductClick" round>查询</el-button>
+        <template>
+            <el-table
+              :data="pageList.list"
+              stripe
+              style="width: 100%">
+              <el-table-column
+                prop="mainImageUrl"
+                label="主图"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                prop="productName"
+                label="商品名称"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                prop="price"
+                label="价格">
+              </el-table-column>
+              <el-table-column
+                prop="quantity"
+                label="库存">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作">
+                <template slot-scope="scope">
+                  <el-button  icon="el-icon-view" @click="productShow(scope.row.productId)" circle></el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+          <el-pagination layout="prev, pager, next" :total="pageList.total" :page-size="pageList.pageSize"
+            @current-change="pageClick">
+        </el-pagination>
+    </div>
+
+    <script src="assets/js/axios.min.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/elementui.js"></script>
+    <script src="viewmodels/productList.js"></script>
+
+</body>
+
+</html>

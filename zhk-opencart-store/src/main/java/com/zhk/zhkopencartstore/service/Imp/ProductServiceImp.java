@@ -20,9 +20,9 @@ public class ProductServiceImp implements ProductService {
     private ProductMapper productMapper;
 
     @Override
-    public Page<ProductLsitDTO> getqueryList(String productName,Double price,Integer quantity,Integer pageNum) {
+    public Page<ProductLsitDTO> getqueryList(String productName,Double price,Integer pageNum) {
         PageHelper.startPage(pageNum,3);
-        Page<ProductLsitDTO> productLsitDTOPage= productMapper.getqueryList(productName,price,quantity);
+        Page<ProductLsitDTO> productLsitDTOPage= productMapper.getqueryList(productName,price);
         return productLsitDTOPage;
     }
 

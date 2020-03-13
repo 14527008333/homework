@@ -2,49 +2,68 @@ var app = new Vue({
     el: '#app',
     data: {
         myShoppingCart:[],
-        quantity:1,
+        buyQuantity:1,
         productId:null,
         productName:null ,
         productCode:null ,
         productAbstract:null ,
         price:null,
         quantity:null,
-        status:null,
         imageUrl:null,
         discount:null ,
         description:null ,
         rewordPoints:null ,
-        otherImageUrls:[] ,
-        selectstatus: [{
-            value: 0,
-            label: '未审核'
-          }, {
-            value: 1,
-            label: '上架'
-          }, {
-            value: 2,
-            label: '下架'
-          }],
+        otherImageUrls:[] 
     },
     mounted() {
+      var url = new URL(location.href);
+      var a= url.searchParams.get("productId")
+      this.productId=a;
       var myShoppingCartJson = localStorage['shppingCartJson'];
       this.myShoppingCart=myShoppingCartJson ? JSON.parse(myShoppingCartJson) : [];
+      this.getProductById();
     },
     methods: {
+      getProductById(){
+        axios.get('/product/show', {
+          params: {
+            productId: this.productId
+          }
+      })
+          .then(function (response) {
+              var product=response.data;
+              app.productId=product.productId;
+              app.productName=product.productName;
+              app.productCode=product.productCode;
+
+              app.productAbstract=product.productAbstract;
+              app.price=product.price;
+
+              app.quantity=product.quantity;
+              app.imageUrl=product.imageUrl;
+              app.discount=product.discount;
+              app.description=product.description;
+              app.rewordPoints=product.rewordPoints;
+              app.otherImageUrls=product.otherImageUrls;
+          })
+          .catch(function () {
+              console.error("error");
+          });
+      },
         addShoppingCart(){
-           var getshoppingProductById= this.myShoppingCart.find(shop => shop.productId===5)
+           var getshoppingProductById= this.myShoppingCart.find(shop => shop.productId===this.productId)
            if(getshoppingProductById){
             var startNum=parseInt(getshoppingProductById.num);
-            var addNum=parseInt(this.quantity);
+            var addNum=parseInt(this.buyQuantity);
             getshoppingProductById.num=startNum+addNum;
            }else{
                 shoppingCartProduct = {
-                  "productId": 5,
-                  "productCode": "sfg45",
-                  "productName": "sfhsdfbg",
-                  "mainPicUrl": "gnjghn.jpg",
-                  "unitPrice": 546.5,
-                  "num": this.quantity
+                  "productId": this.productId,
+                  "productCode": this.productCode,
+                  "productName": this.productName,
+                  "mainPicUrl": this.mainPicUrl,
+                  "unitPrice": this.price,
+                  "num": this.buyQuantity
               };
               this.myShoppingCart.push(shoppingCartProduct);
            }

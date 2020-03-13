@@ -20,7 +20,7 @@ public interface ProductMapper {
     int updateByPrimaryKeySelective(Product record);
 
     int updateByPrimaryKey(Product record);
-    Page<ProductLsitDTO> getqueryList(@Param("productName")String productName,@Param("price")Double price,@Param("quantity")Integer quantity);
+    Page<ProductLsitDTO> getqueryList(@Param("productName")String productName,@Param("price")Double price);
 
     ProductShowDTO getProductAndProductDetailById(@Param("productId")Integer productId);
 }
