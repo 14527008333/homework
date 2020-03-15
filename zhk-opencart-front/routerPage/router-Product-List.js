@@ -110,11 +110,11 @@ const productList = {
           },
           productShow(productId){
               console.log("show "+productId);
-              location.href = 'http://127.0.0.1:8080/productShow.html?productId=' + productId;
+              this.$router.push("/product/show/"+productId);
           },
           productupdate(productId){
               console.log("update "+productId);
-              location.href = 'http://127.0.0.1:8080/productUpdate.html?productId=' + productId;
+              this.$router.push("/product/update/"+productId);
           },
           insertProductClick(){
               console.log("insert product");
