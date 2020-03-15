@@ -4,7 +4,8 @@ const routes = [
     { path: '/order/list', component: orderList },
     { path: '/product/create', component: productCreate },
     { path: '/product/update/:productId', component: productUpdate },
-    { path: '/product/show/:productId', component: productShow }
+    { path: '/product/show/:productId', component: productShow },
+    { path: '/customer/show/:customerId', component: customerShow }
   ];
 
   const router = new VueRouter({
