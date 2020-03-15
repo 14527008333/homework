@@ -5,7 +5,8 @@ const routes = [
     { path: '/product/create', component: productCreate },
     { path: '/product/update/:productId', component: productUpdate },
     { path: '/product/show/:productId', component: productShow },
-    { path: '/customer/show/:customerId', component: customerShow }
+    { path: '/customer/show/:customerId', component: customerShow },
+    { path: '/customer/updateStatus/:customerId', component: customerUpdateStatus }
   ];
 
   const router = new VueRouter({

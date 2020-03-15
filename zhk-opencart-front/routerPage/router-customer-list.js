@@ -109,7 +109,7 @@ const customerList = {
           },
           updateStatusClick(customerId){
               console.log("show "+customerId);
-              location.href = 'http://127.0.0.1:8080/customerUpdateStatus.html?customerId=' + customerId;
+              this.$router.push("/customer/updateStatus/"+customerId);
           }
           
       }
