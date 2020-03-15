@@ -151,7 +151,7 @@ const orderList = {
           },
           orderShow(orderId){
               console.log("show "+orderId);
-              location.href = 'http://127.0.0.1:8080/orderShow.html?orderId=' + orderId;
+              this.$router.push("/order/show/"+orderId);
           }
           
       }
