@@ -113,12 +113,12 @@ const productList = {
               location.href = 'http://127.0.0.1:8080/productShow.html?productId=' + productId;
           },
           productupdate(productId){
-              console.log("update "+productId)
+              console.log("update "+productId);
               location.href = 'http://127.0.0.1:8080/productUpdate.html?productId=' + productId;
           },
           insertProductClick(){
-              console.log("insert product")
-              location.href = 'http://127.0.0.1:8080/productCreate.html';
+              console.log("insert product");
+              this.$router.push("/product/create");
           }
           
       }
