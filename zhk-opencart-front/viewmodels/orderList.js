@@ -83,9 +83,9 @@ var app = new Vue({
             console.log("query click");
             this.getOrderList();
         },
-        orderShow(productId){
-            console.log("show "+productId);
-            location.href = 'http://127.0.0.1:8080/productShow.html?productId=' + productId;
+        orderShow(orderId){
+            console.log("show "+orderId);
+            location.href = 'http://127.0.0.1:8080/orderShow.html?orderId=' + orderId;
         }
         
     }

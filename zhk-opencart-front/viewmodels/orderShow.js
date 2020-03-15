@@ -69,17 +69,21 @@ var app = new Vue({
           }, {
             value: '12',
             label: '已评价'
-          }]
+          }],
+          orderHistoryStatus:null,
+          orderHistoryComment:null,
+          customerNotified:false,
     },
     mounted() {
         var url = new URL(location.href);
         var a= url.searchParams.get("orderId");
          this.orderId=a;
         this.getOrderById();
+        this.getOrderHistoryListById();
     },
     methods: {
         getOrderById() {
-            axios.get('/order/show', {
+            axios.get('http://localhost:8081/order/show', {
                 params: {
                     orderId:this.orderId
                 }
@@ -99,15 +103,50 @@ var app = new Vue({
                     app.invoiceAddress=orderShow.invoiceAddress,
                     app.invoicePrice=orderShow.invoicePrice,
                     app.comment=orderShow.comment,
-                    app.orderProducts=orderShow.orderProducts,
-                    app.orderHistories=orderShow.orderHistories
+                    app.orderProducts=orderShow.orderProducts
                     
                 })
                 .catch(function (error) {
                     console.error(error);
                 });
             
-        }
+        },
+        getOrderHistoryListById() {
+          axios.get('http://localhost:8081/orderHistory/list', {
+              params: {
+                  orderId:this.orderId
+              }
+          })
+              .then(function (response) {
+                  console.log(response);
+                  var orderHistoryList=response.data;
+                  app.orderHistories=orderHistoryList;
+                  
+              })
+              .catch(function (error) {
+                  console.error(error);
+              });
+          
+      },
+      submitOrderHistory(){
+        console.log("submit orderHistory");
+        this.createOrderHistory();
+      },
+      createOrderHistory() {
+        axios.post('http://localhost:8081/orderHistory/create', {
+                orderId:this.orderId, 
+                orderStatus:this.orderHistoryStatus,
+                comment:this.orderHistoryComment,
+                customerNotified:this.customerNotified
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+        
+    }
         
     }
     

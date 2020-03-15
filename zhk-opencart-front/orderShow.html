@@ -15,13 +15,13 @@
       订单状态：{{orderStatus[status].label}}<br>
       总价格：{{totalPrice}}<br>
       总积分：{{rewordPoints}}<br>
-      下单时间：{{new Date(createTimestamp).toLocaleString()}}
-      更新时间{{new Date(updateTimestamp).toLocaleString()}}
+      下单时间：{{new Date(createTimestamp).toLocaleString()}}<br>
+      更新时间{{new Date(updateTimestamp).toLocaleString()}}<br>
       邮寄方式：{{selectshipMethod[shipMethod].label}}<br>
       邮寄地址：{{shipAddress}}<br>
       支付方式：{{selectpayMethod[payMethod].label}}<br>
       发票地址：{{invoiceAddress}}<br>
-      备注：{{comment}}<br>
+      备注：{{comment}}<br><br><br>
         订单详情展示：
         <template>
             <el-table
@@ -59,7 +59,7 @@
             </el-table>
           </template>
           邮费:{{shipPrice}}<br>
-          最终支付：{{totalPrice + shipPrice}}<br>
+          最终支付：{{totalPrice + shipPrice}}<br><br><br>
         订单历史状态：
         <template>
             <el-table
@@ -67,25 +67,37 @@
               stripe
               style="width: 100%">
               <el-table-column
-                prop="timestamp"
+                prop="time"
                 label="历史订单创建时间">
-                <template slot-scope="scope">
-                  {{(new Date(scope.row.timestamp)).toLocaleString()}}
-                </template>
+                  <template slot-scope="scope">
+                    {{(new Date(scope.row.time)).toLocaleString()}}
+                  </template>
               </el-table-column>
               <el-table-column
                 prop="orderStatus"
                 label="订单状态">
-                <template slot-scope="scope">
-                  {{orderStatus[scope.row.orderStatus].label}}
-                </template>
+                  <template slot-scope="scope">
+                    {{orderStatus[scope.row.orderStatus].label}}
+                  </template>
               </el-table-column>
               <el-table-column
                 prop="comment"
                 label="备注">
               </el-table-column>
             </el-table>
-          </template>
+          </template><br>
+          订单历史更新：<br>
+          <el-select v-model="orderHistoryStatus" placeholder="请选择订单状态">
+            <el-option
+              v-for="item in orderStatus"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select><br>
+          <el-checkbox v-model="customerNotified">通知客户</el-checkbox><br>
+          <el-input v-model="orderHistoryComment" type="textarea" placeholder="请输入备注"></el-input><br>
+          <el-button type="primary" @click="submitOrderHistory" round>提交订单历史</el-button>
           
     </div>
 
